@@ -1,4 +1,4 @@
 # ItsMyLib.Components
 Une bibliothèque de composants web (Web Components)
 
-[En cours de constructions]
+[En cours de construction]
