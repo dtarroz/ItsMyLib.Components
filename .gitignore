@@ -393,3 +393,6 @@ FodyWeavers.xsd
 # JetBrains Rider
 .idea/
 *.sln.iml
+
+# Storybook
+*storybook.log
