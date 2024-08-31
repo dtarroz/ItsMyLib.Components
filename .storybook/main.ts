@@ -1,18 +1,19 @@
-import type { StorybookConfig } from "@storybook/web-components-vite";
+import type { StorybookConfig } from '@storybook/web-components-vite';
 
 const config: StorybookConfig = {
-  stories: [
-    "../src/**/*.mdx",
-    "../src/**/*.stories.@(js|jsx|mjs|ts|tsx)",
-  ],
-  addons: [
-    "@storybook/addon-links",
-    "@storybook/addon-essentials",
-    "@chromatic-com/storybook",
-  ],
-  framework: {
-    name: "@storybook/web-components-vite",
-    options: {},
-  },
+    stories: [
+        '../src/**/*.mdx',
+        '../src/**/*.stories.@(js|jsx|mjs|ts|tsx)'
+    ],
+    addons: [
+        '@storybook/addon-links',
+        '@storybook/addon-essentials',
+        '@whitespace/storybook-addon-html',
+        '@storybook/addon-a11y'
+    ],
+    framework: {
+        name: '@storybook/web-components-vite',
+        options: {},
+    },
 };
 export default config;
