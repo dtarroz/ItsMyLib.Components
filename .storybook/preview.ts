@@ -1,6 +1,9 @@
 import type { Preview } from "@storybook/web-components";
+import { withActions } from '@storybook/addon-actions/decorator';
 
-const preview: Preview = {
+const preview: Preview = { 
+  tags: ['autodocs'],
+  decorators: [withActions],  
   parameters: {
     controls: {
       matchers: {
@@ -8,6 +11,13 @@ const preview: Preview = {
         date: /Date$/i,
       },
     },
+    backgrounds: {
+      default:'dark',
+      values: [
+        { name: 'light', value: '#fff' },
+        { name: 'dark', value: '#161616' },
+      ]
+    }
   },
 };
 
