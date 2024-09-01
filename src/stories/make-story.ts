@@ -27,10 +27,22 @@ export interface MetaAttribute {
     description: string;
     /** Le composant qui permet d'interragir avec l'attribut */
     control: Control;
+    /** Les options du composant qui interagit avec l'attribut */
+    options?: any[];
     /** Le type de données de l'attribut */
     type: SBType | SBScalarType['name'];
     /** La valeur par défaut de l'attribut */
-    defaultValue: string;
+    defaultValue?: any;
+}
+
+/**
+ * La documentation sur un slot d'un composant personalisé
+ */
+export interface MetaSlot {
+    /** Le nom de l'attribut */
+    name?: string;
+    /** La description de l'attribut */
+    description: string;
 }
 
 /**
@@ -41,10 +53,26 @@ export interface MetaData {
     tag: string;
     /** La description du composant personnalisé */
     description: string;
-    /** La liste des événements du composant personnalisé */
-    events?: MetaEvent[];
+    /** La liste des slots du composant personnalisé */
+    slots?: MetaSlot[];
     /** La liste des attributs du composant personnalisé */
     attributes?: MetaAttribute[];
+    /** La liste des événements du composant personnalisé */
+    events?: MetaEvent[];
+}
+
+/**
+ * La description simplifiée d'une Story d'un composant personnalisé
+ */
+export interface StoryData {
+    /** La documentation du composant personnalisé */
+    meta: Meta;
+    /** La description de la Story */
+    description: string;
+    /** La liste des attributs du composant principal personnalisé */
+    attributes?: Args;
+    /** La liste des attributs des autres composants personnalisés */
+    itemsAttributes?: Args[];
 }
 
 /**
@@ -69,14 +97,26 @@ export function makeMeta(metaData: MetaData): Meta {
         },
         argTypes: {
             ...convertAttributes(metaData.attributes),
+            ...convertSlots(metaData.slots),
             ...convertEvents(metaData.events)
+        },
+        args: {
+            ...convertDefaultValues(metaData.attributes)
         }
     };
 }
 
 function convertAttributes(attributes: MetaAttribute[] | undefined) {
     return attributes?.reduce((acc, obj) => {
-        acc[obj.name] = convertToControlArgType(obj);
+        acc[obj.name] = convertToAttributeArgType(obj);
+        return acc;
+    }, {} as { [name: string]: any });
+}
+
+function convertSlots(slots: MetaSlot[] | undefined) {
+    return slots?.reduce((acc, obj) => {
+        const name = obj.name ? `<slot name="${obj.name}">` : '<slot>';
+        acc[name] = convertToSlotArgType(obj);
         return acc;
     }, {} as { [name: string]: any });
 }
@@ -88,15 +128,37 @@ function convertEvents(events: MetaEvent[] | undefined) {
     }, {} as { [name: string]: any });
 }
 
-function convertToControlArgType(attribute: MetaAttribute) {
+function convertDefaultValues(attributes: MetaAttribute[] | undefined) {
+    return attributes?.reduce((acc, obj) => {
+        acc[obj.name] = obj.defaultValue;
+        return acc;
+    }, {} as { [name: string]: any });
+}
+
+function convertToAttributeArgType(attribute: MetaAttribute) {
     return {
         description: attribute.description,
         control: attribute.control,
+        options: attribute.options,
         type: attribute.type,
         table: {
             category: 'Attributes',
             defaultValue: {
-                summary: attribute.defaultValue
+                summary: attribute.defaultValue?.toString()
+            }
+        }
+    };
+}
+
+function convertToSlotArgType(slot: MetaSlot) {
+    return {
+        description: slot.description,
+        control: 'text',
+        type: 'string',
+        table: {
+            category: 'Slots',
+            defaultValue: {
+                summary: null
             }
         }
     };
@@ -105,9 +167,13 @@ function convertToControlArgType(attribute: MetaAttribute) {
 function convertToEventArgType(event: MetaEvent) {
     return {
         description: event.description,
-        type: 'function',
+        control: false,
+        type: 'CustomEvent',
         table: {
-            category: 'Events'
+            category: 'Events',
+            defaultValue: {
+                summary: null
+            }
         }
     };
 }
@@ -115,22 +181,17 @@ function convertToEventArgType(event: MetaEvent) {
 /**
  * Création d'une instance "Story" pour Storybook.
  * Permet de centraliser la création d'une instance "Story" pour les web components.
- *
- * @param meta L'instance "Meta" de Storybook
- * @param description La description de la story pour la documentation
- * @param primaryAttributes Les attributs pour le composant personnalisé principal de la story
- * @param otherAttributes Les autres attributs s'il y a d'autres composants personnalisés dans la story
  */
-export function makeStory(meta: Meta, description: string, primaryAttributes?: Args, otherAttributes?: Args[]): StoryObj {
+export function makeStory(storyData: StoryData): StoryObj {
     const renderStory = (args: Args, preview: boolean) => {
-        const primary = renderHtml(meta, args);
-        const others = otherAttributes?.map(a => renderHtml(meta, a)) ?? [];
+        const primary = renderHtml(storyData.meta, args);
+        const others = storyData.itemsAttributes?.map(a => renderHtml(storyData.meta, a)) ?? [];
         const components = [primary, ...others].join(preview ? '\n' : '');
         return others.length > 0 && !preview ? `<div style="display: flex; gap: 1em; width: 100%;">${components}</div>` : components;
     };
     return {
         render: (args: Args) => renderStory(args, false),
-        args: primaryAttributes ?? {},
+        args: storyData.attributes ?? {},
         decorators: [(story, context) => {
             context.parameters.docs.source.code = renderStory(context.args, true);
             return story(context);
@@ -138,7 +199,7 @@ export function makeStory(meta: Meta, description: string, primaryAttributes?: A
         parameters: {
             docs: {
                 description: {
-                    story: description
+                    story: storyData.description
                 }
             }
         }
@@ -146,6 +207,11 @@ export function makeStory(meta: Meta, description: string, primaryAttributes?: A
 }
 
 function renderHtml(meta: Meta, args: Args) {
-    const attributes = Object.entries(args).map(([key, value]) => `${key}="${value}"`).join(' ');
-    return `<${meta.component ?? ''}${attributes ? ' ' : ''}${attributes}></${meta.component ?? ''}>`;
+    const attributes = Object.entries(args).map(([key, value]) => key[0] != '<' ? `${key}="${value}"` : '').join(' ').trim();
+    const slots = Object.entries(args).map(([key, value]) => key[0] == '<' ? `${key}${value}</slot>` : '').join(' ').trim();
+    const tag = meta.component ?? '';
+    const beforeAttributes = attributes ? ' ' : '';
+    const beforeSlots = slots ? '\n    ' : '';
+    const afterSlots = slots ? '\n' : '';
+    return `<${tag}${beforeAttributes}${attributes}>${beforeSlots}${slots}${afterSlots}</${tag}>`;
 }
