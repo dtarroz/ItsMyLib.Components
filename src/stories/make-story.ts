@@ -40,7 +40,7 @@ export interface MetaAttribute {
  */
 export interface MetaSlot {
     /** Le nom de l'attribut */
-    name?: string;
+    name: string;
     /** La description de l'attribut */
     description: string;
 }
@@ -115,8 +115,7 @@ function convertAttributes(attributes: MetaAttribute[] | undefined) {
 
 function convertSlots(slots: MetaSlot[] | undefined) {
     return slots?.reduce((acc, obj) => {
-        const name = obj.name ? `<slot name="${obj.name}">` : '<slot>';
-        acc[name] = convertToSlotArgType(obj);
+        acc[obj.name] = convertToSlotArgType(obj);
         return acc;
     }, {} as { [name: string]: any });
 }
@@ -207,11 +206,19 @@ export function makeStory(storyData: StoryData): StoryObj {
 }
 
 function renderHtml(meta: Meta, args: Args) {
-    const attributes = Object.entries(args).map(([key, value]) => key[0] != '<' ? `${key}="${value}"` : '').join(' ').trim();
-    const slots = Object.entries(args).map(([key, value]) => key[0] == '<' ? `${key}${value}</slot>` : '').join(' ').trim();
+    const attributes = Object.entries(args).map(([key, value]) => isAttribute(key, value) ? `${key}="${value}"` : '').join(' ').trim();
+    const slots = Object.entries(args).map(([key, value]) => isSlot(key, value) ? value : '').join('\n    ').trim();
     const tag = meta.component ?? '';
     const beforeAttributes = attributes ? ' ' : '';
-    const beforeSlots = slots ? '\n    ' : '';
-    const afterSlots = slots ? '\n' : '';
+    const beforeSlots = slots && slots[0] === '<' ? '\n    ' : '';
+    const afterSlots = slots && slots[0] === '<' ? '\n' : '';
     return `<${tag}${beforeAttributes}${attributes}>${beforeSlots}${slots}${afterSlots}</${tag}>`;
+}
+
+function isAttribute(key: string, value: any) {
+    return key[0] === '<' || key[0] === '>' ? false : value !== undefined;
+}
+
+function isSlot(key: string, value: any) {
+    return key[0] === '<' || key[0] === '>' ? value !== undefined : false;
 }
