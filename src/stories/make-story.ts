@@ -69,10 +69,8 @@ export interface StoryData {
     meta: Meta;
     /** La description de la Story */
     description: string;
-    /** La liste des attributs du composant principal personnalisé */
-    attributes?: Args;
-    /** La liste des attributs des autres composants personnalisés */
-    itemsAttributes?: Args[];
+    /** La liste des attributs des composants personnalisés */
+    items?: Args[];
 }
 
 /**
@@ -184,13 +182,13 @@ function convertToEventArgType(event: MetaEvent) {
 export function makeStory(storyData: StoryData): StoryObj {
     const renderStory = (args: Args, preview: boolean) => {
         const primary = renderHtml(storyData.meta, args);
-        const others = storyData.itemsAttributes?.map(a => renderHtml(storyData.meta, a)) ?? [];
+        const others = (storyData.items ?? []).slice(1).map(a => renderHtml(storyData.meta, a)) ?? [];
         const components = [primary, ...others].join(preview ? '\n' : '');
         return others.length > 0 && !preview ? `<div class="iml-sb-preview">${components}</div>` : components;
     };
     return {
         render: (args: Args) => renderStory(args, false),
-        args: storyData.attributes ?? {},
+        args: storyData.items?.[0] ?? {},
         decorators: [(story, context) => {
             context.parameters.docs.source.code = renderStory(context.args, true);
             return story(context);
