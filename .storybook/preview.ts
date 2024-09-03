@@ -1,5 +1,6 @@
 import type { Preview } from "@storybook/web-components";
 import { withActions } from '@storybook/addon-actions/decorator';
+import './preview.css';
 
 const preview: Preview = { 
   tags: ['autodocs'],

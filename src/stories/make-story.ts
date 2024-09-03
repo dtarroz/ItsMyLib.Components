@@ -186,7 +186,7 @@ export function makeStory(storyData: StoryData): StoryObj {
         const primary = renderHtml(storyData.meta, args);
         const others = storyData.itemsAttributes?.map(a => renderHtml(storyData.meta, a)) ?? [];
         const components = [primary, ...others].join(preview ? '\n' : '');
-        return others.length > 0 && !preview ? `<div style="display: flex; gap: 1em; width: 100%;">${components}</div>` : components;
+        return others.length > 0 && !preview ? `<div class="iml-sb-preview">${components}</div>` : components;
     };
     return {
         render: (args: Args) => renderStory(args, false),
