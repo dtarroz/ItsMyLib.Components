@@ -2,23 +2,23 @@ import { Meta, StoryObj } from '@storybook/web-components';
 import { Args, SBScalarType, SBType } from '@storybook/csf';
 
 /**
- * La documentation sur un événement d'un composant personalisé
- */
-export interface MetaEvent {
-    /** Le nom de l'événement  */
-    name: string;
-    /** La description de l'événement */
-    description: string;
-}
-
-/**
  * Le composant d'interraction dans la documentation
  */
 export type Control = 'object' | 'boolean' | 'check' | 'inline-check' | 'radio' | 'inline-radio' | 'select' | 'multi-select' | 'number'
                       | 'range' | 'file' | 'color' | 'date' | 'text';
 
 /**
- * La documentation sur un attribut d'un composant personalisé
+ * La documentation sur un slot d'un composant personnalisé
+ */
+export interface MetaSlot {
+    /** Le nom de l'attribut */
+    name: string;
+    /** La description de l'attribut */
+    description: string;
+}
+
+/**
+ * La documentation sur un attribut d'un composant personnalisé
  */
 export interface MetaAttribute {
     /** Le nom de l'attribut */
@@ -36,13 +36,25 @@ export interface MetaAttribute {
 }
 
 /**
- * La documentation sur un slot d'un composant personalisé
+ * La documentation sur un événement d'un composant personnalisé
  */
-export interface MetaSlot {
-    /** Le nom de l'attribut */
+export interface MetaEvent {
+    /** Le nom de l'événement  */
     name: string;
-    /** La description de l'attribut */
+    /** La description de l'événement */
     description: string;
+}
+
+/**
+ * La documentation sur une variable CSS d'un composant personnalisé
+ */
+export interface MetaCss {
+    /** Le nom de la variable CSS  */
+    name: string;
+    /** La description de la variable CSS */
+    description: string;
+    /** La valeur par défaut de la variable CSS */
+    defaultValue: string;
 }
 
 /**
@@ -59,6 +71,8 @@ export interface MetaData {
     attributes?: MetaAttribute[];
     /** La liste des événements du composant personnalisé */
     events?: MetaEvent[];
+    /** La liste des variables CSS */
+    css?: MetaCss[];
 }
 
 /**
@@ -96,7 +110,8 @@ export function makeMeta(metaData: MetaData): Meta {
         argTypes: {
             ...convertAttributes(metaData.attributes),
             ...convertSlots(metaData.slots),
-            ...convertEvents(metaData.events)
+            ...convertEvents(metaData.events),
+            ...convertCss(metaData.css)
         },
         args: {
             ...convertDefaultValues(metaData.attributes)
@@ -121,6 +136,13 @@ function convertSlots(slots: MetaSlot[] | undefined) {
 function convertEvents(events: MetaEvent[] | undefined) {
     return events?.reduce((acc, obj) => {
         acc[obj.name] = convertToEventArgType(obj);
+        return acc;
+    }, {} as { [name: string]: any });
+}
+
+function convertCss(css: MetaCss[] | undefined) {
+    return css?.reduce((acc, obj) => {
+        acc[obj.name] = convertToCssArgType(obj);
         return acc;
     }, {} as { [name: string]: any });
 }
@@ -175,16 +197,32 @@ function convertToEventArgType(event: MetaEvent) {
     };
 }
 
+function convertToCssArgType(css: MetaCss) {
+    return {
+        description: css.description,
+        control: 'text',
+        type: 'string',
+        table: {
+            category: 'CSS Custom Properties',
+            defaultValue: {
+                summary: css.defaultValue
+            }
+        }
+    };
+}
+
 /**
  * Création d'une instance "Story" pour Storybook.
  * Permet de centraliser la création d'une instance "Story" pour les web components.
  */
 export function makeStory(storyData: StoryData): StoryObj {
     const renderStory = (args: Args, preview: boolean) => {
+        const css = renderCss(storyData.meta, args);
         const primary = renderHtml(storyData.meta, args);
         const others = (storyData.items ?? []).slice(1).map(a => renderHtml(storyData.meta, a)) ?? [];
         const components = [primary, ...others].join(preview ? '\n' : '');
-        return others.length > 0 && !preview ? `<div class="iml-sb-preview">${components}</div>` : components;
+        const html = others.length > 0 && !preview ? `<div class="iml-sb-preview">${components}</div>` : components;
+        return !preview ? `${css}${html}` : html;
     };
     return {
         render: (args: Args) => renderStory(args, false),
@@ -213,10 +251,20 @@ function renderHtml(meta: Meta, args: Args) {
     return `<${tag}${beforeAttributes}${attributes}>${beforeSlots}${slots}${afterSlots}</${tag}>`;
 }
 
+function renderCss(meta: Meta, args: Args){
+    const tag = meta.component ?? '*';
+    const css = Object.entries(args).map(([key, value]) => isCss(key, value) ? `${key}:${value};` : '').join('').trim();
+    return css ? `<style>${tag}{${css}}</style>` : '';
+}
+
 function isAttribute(key: string, value: any) {
     return key[0] === '<' || key[0] === '>' ? false : value !== undefined;
 }
 
 function isSlot(key: string, value: any) {
     return key[0] === '<' || key[0] === '>' ? value !== undefined : false;
+}
+
+function isCss(key: string, value: any) {
+    return key[0] === '-' && key[1] === '-' ? value : false;
 }
