@@ -8,7 +8,7 @@ const allPropertiesByClassName = new Map<string, string[]>();
  * @param tag Le nom de la balise du tag
  */
 export function customElement(tag: string) {
-    return <T extends { new(...params: any[]): ImlHTMLElement }>(constr: T) => {
+    return <T extends { new(...params: any[]): ImlHTMLElement<string> }>(constr: T) => {
         const className = constr.prototype.constructor.name;
 
         if (!(constr.prototype instanceof ImlHTMLElement))
@@ -51,7 +51,7 @@ export function customElement(tag: string) {
  * Décorateur de propriété pour associer l'attribut du même nom à la propriété
  */
 export function property() {
-    return <T extends ImlHTMLElement>(target: T, propertyKey: string) => {
+    return <T extends ImlHTMLElement<string>>(target: T, propertyKey: string) => {
         if (typeof (target as any)[propertyKey] === 'function')
             throw new Error(`Illegal decorator '@property' on '${propertyKey}', only on property`);
 
