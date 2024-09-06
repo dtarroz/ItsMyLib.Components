@@ -1,9 +1,10 @@
 {
-  "name": "ItsMyLib.Components",
+  "name": "itsmylib.components",
   "type": "module",
   "scripts": {
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "bundle": "npx tsc && npx esbuild src/**/*.ts --bundle --minify --target=es2020 --outdir=dist"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^1.6.1",
@@ -16,6 +17,7 @@
     "@storybook/web-components": "^8.2.9",
     "@storybook/web-components-vite": "^8.2.9",
     "@whitespace/storybook-addon-html": "^6.1.1",
+    "esbuild": "^0.23.1",
     "lit": "^3.2.0",
     "storybook": "^8.2.9",
     "typescript": "^5.5.4",
