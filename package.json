@@ -4,7 +4,7 @@
   "scripts": {
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "bundle": "npx tsc && npx esbuild src/**/*.ts --bundle --minify --target=es2020 --outdir=dist"
+    "production": "npx tsc"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^1.6.1",
