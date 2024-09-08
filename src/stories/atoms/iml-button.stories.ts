@@ -89,7 +89,7 @@ export const RedirectToUrl = makeStory({
     items: [
         {
             '><': 'Avec redirection',
-            redirectToUrl: document.location.origin
+            redirectToUrl: 'https://github.com/dtarroz/ItsMyLib.Components'
         },
         {
             '><': 'Sans redirection',
