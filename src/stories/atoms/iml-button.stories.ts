@@ -93,7 +93,7 @@ export const RedirectToUrl = makeStory({
         },
         {
             '><': 'Sans redirection',
-            redirectToUrl: document.location.origin,
+            redirectToUrl: 'https://github.com/dtarroz/ItsMyLib.Components',
             disabled: true
         }
     ]
