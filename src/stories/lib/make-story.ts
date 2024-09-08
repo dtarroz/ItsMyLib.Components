@@ -99,7 +99,9 @@ export function makeMeta(metaData: MetaData): Meta {
         parameters: {
             docs: {
                 description: {
-                    component: metaData.description ?? ''
+                    component: `${metaData.description}
+
+[Le code source du composant sur GitHub](https://github.com/dtarroz/ItsMyLib.Components/blob/main/src/components/${metaData.tag}.ts)`
                 },
                 toc: true
             },
