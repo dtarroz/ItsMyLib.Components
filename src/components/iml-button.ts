@@ -1,5 +1,5 @@
-import { ImlHTMLElement } from '../lib/iml-htmlelement.ts';
-import { customElement, property } from '../lib/decorators.ts';
+import { ImlHTMLElement } from './lib/iml-htmlelement.js';
+import { customElement, property } from './lib/decorators.js';
 
 type TypeCustomEventImlButton = 'iml-button:click';
 
@@ -15,7 +15,7 @@ export class ImlButton extends ImlHTMLElement<TypeCustomEventImlButton> {
     /** Le bouton est inactif si la valeur est égal à true */
     @property() disabled: boolean = false;
 
-    override html() {
+    protected override html() {
         return `<button class="${this.componentClass()}"><slot></slot></button>`;
     }
 
@@ -26,7 +26,7 @@ export class ImlButton extends ImlHTMLElement<TypeCustomEventImlButton> {
         return classMap.join(' ');
     }
 
-    override renderUpdated() {
+    protected override renderUpdated() {
         this.queryShadowSelector('button, a')?.addEventListener('click', (event) => {
             if (this.disabled)
                 return;
@@ -37,7 +37,7 @@ export class ImlButton extends ImlHTMLElement<TypeCustomEventImlButton> {
         });
     }
 
-    override css() {
+    protected override css() {
         return `
         <!--suppress CssUnresolvedCustomProperty -->
         <style>

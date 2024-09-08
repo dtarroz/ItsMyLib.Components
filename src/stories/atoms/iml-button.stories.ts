@@ -1,5 +1,5 @@
-import { makeMeta, makeStory } from '../../stories/lib/make-story.ts';
-import './iml-button.ts';
+import { makeMeta, makeStory } from '../lib/make-story.js';
+import '../../components/iml-button.js';
 
 const meta = makeMeta({
     tag: 'iml-button',

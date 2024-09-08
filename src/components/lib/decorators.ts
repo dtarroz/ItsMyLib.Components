@@ -1,4 +1,4 @@
-import { ImlHTMLElement } from './iml-htmlelement.ts';
+import { ImlHTMLElement } from './iml-htmlelement.js';
 
 const allPropertiesByClassName = new Map<string, string[]>();
 
