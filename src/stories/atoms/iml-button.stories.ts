@@ -20,7 +20,7 @@ const meta = makeMeta({
             defaultValue: 'primary'
         },
         {
-            name: 'redirectToUrl',
+            name: 'redirect-to-url',
             description: 'L\'url de redirection après le clic sur le bouton, seulement si l\'événement n\'a pas été explicitement annulé',
             control: 'text',
             type: 'string'
@@ -72,12 +72,12 @@ export const Disabled = makeStory({
     items: [
         {
             '><': 'Primary',
-            disabled: true
+            'disabled': true
         },
         {
             '><': 'Secondary',
             'mode': 'secondary',
-            disabled: true
+            'disabled': true
         }
     ]
 });
@@ -89,12 +89,12 @@ export const RedirectToUrl = makeStory({
     items: [
         {
             '><': 'Avec redirection',
-            redirectToUrl: 'https://github.com/dtarroz/ItsMyLib.Components'
+            'redirect-to-url': 'https://github.com/dtarroz/ItsMyLib.Components'
         },
         {
             '><': 'Sans redirection',
-            redirectToUrl: 'https://github.com/dtarroz/ItsMyLib.Components',
-            disabled: true
+            'redirect-to-url': 'https://github.com/dtarroz/ItsMyLib.Components',
+            'disabled': true
         }
     ]
 });

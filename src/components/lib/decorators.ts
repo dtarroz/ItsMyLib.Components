@@ -1,6 +1,11 @@
 import { ImlHTMLElement } from './iml-htmlelement.js';
 
-const allPropertiesByClassName = new Map<string, string[]>();
+interface PropertyAttribute {
+    property: string;
+    attribute: string;
+}
+
+const allPropertiesAttributesByClassName = new Map<string, PropertyAttribute[]>();
 
 /**
  * Décorateur de classe pour définir le nom de la balise du tag du composant personnalisé à la classe
@@ -19,16 +24,17 @@ export function customElement(tag: string) {
             constructor(...args: any[]) {
                 super(...args);
                 const that: any = this;
-                const properties = allPropertiesByClassName.get(className);
-                if (properties) {
-                    for (const property of properties) {
-                        that[`_${property}`] = this.getAttribute(property) ?? that[property];
-                        Object.defineProperty(this, property, {
+                const propertiesAttributes = allPropertiesAttributesByClassName.get(className);
+                if (propertiesAttributes) {
+                    for (const propertyAttribute of propertiesAttributes) {
+                        that[`_${propertyAttribute.property}`] = this.getAttribute(propertyAttribute.attribute)
+                                                                 ?? that[propertyAttribute.property];
+                        Object.defineProperty(this, propertyAttribute.property, {
                             get() {
-                                return this[`_${property}`];
+                                return this[`_${propertyAttribute.property}`];
                             },
                             set(value) {
-                                this[`_${property}`] = value;
+                                this[`_${propertyAttribute.property}`] = value;
                                 this.render();
                             },
                             enumerable: true,
@@ -49,15 +55,19 @@ export function customElement(tag: string) {
 
 /**
  * Décorateur de propriété pour associer l'attribut du même nom à la propriété
+ * 
+ * @param {string|null} attribute Le nom de l'attribut associé à la propriété, si différent du nom de la propriété, sinon null
  */
-export function property() {
+export function property(attribute: string | null = null) {
     return <T extends ImlHTMLElement<string>>(target: T, propertyKey: string) => {
         if (typeof (target as any)[propertyKey] === 'function')
             throw new Error(`Illegal decorator '@property' on '${propertyKey}', only on property`);
 
         const className = target.constructor.name;
-        if (!allPropertiesByClassName.has(className))
-            allPropertiesByClassName.set(className, [propertyKey]);
-        allPropertiesByClassName.get(className)!.push(propertyKey);
+        const propertyAttribute = { property: propertyKey, attribute: attribute ?? propertyKey };
+        if (!allPropertiesAttributesByClassName.has(className))
+            allPropertiesAttributesByClassName.set(className, [propertyAttribute]);
+        else
+            allPropertiesAttributesByClassName.get(className)!.push(propertyAttribute);
     };
 }

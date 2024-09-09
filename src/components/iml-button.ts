@@ -8,10 +8,10 @@ export class ImlButton extends ImlHTMLElement<TypeCustomEventImlButton> {
 
     /** Le mode de rendu du bouton */
     @property() mode: 'primary' | 'secondary' = 'primary';
-    
+
     /** L'url de redirection après le clic sur le bouton, seulement si l'événement n'a pas été explicitement annulé */
-    @property() redirectToUrl?: string;
-    
+    @property('redirect-to-url') redirectToUrl?: string;
+
     /** Le bouton est inactif si la valeur est égal à true */
     @property() disabled: boolean = false;
 
