@@ -112,6 +112,7 @@ export function makeMeta(metaData: MetaData): Meta {
         argTypes: {
             ...convertAttributes(metaData.attributes),
             ...convertSlots(metaData.slots),
+            ...convertProperties(metaData.attributes),
             ...convertEvents(metaData.events),
             ...convertCss(metaData.css)
         },
@@ -131,6 +132,14 @@ function convertAttributes(attributes: MetaAttribute[] | undefined) {
 function convertSlots(slots: MetaSlot[] | undefined) {
     return slots?.reduce((acc, obj) => {
         acc[obj.name] = convertToSlotArgType(obj);
+        return acc;
+    }, {} as { [name: string]: any });
+}
+
+function convertProperties(attributes: MetaAttribute[] | undefined) {
+    return attributes?.reduce((acc, obj) => {
+        if (obj.name.indexOf('-') > 0)
+            acc[toCamelCase(obj.name)] = convertToPropertiesArgType(obj);
         return acc;
     }, {} as { [name: string]: any });
 }
@@ -180,6 +189,20 @@ function convertToSlotArgType(slot: MetaSlot) {
             category: 'Slots',
             defaultValue: {
                 summary: null
+            }
+        }
+    };
+}
+
+function convertToPropertiesArgType(attribute: MetaAttribute) {
+    return {
+        description: attribute.description,
+        control: false,
+        type: attribute.type,
+        table: {
+            category: 'Properties',
+            defaultValue: {
+                summary: attribute.defaultValue?.toString()
             }
         }
     };
@@ -253,7 +276,7 @@ function renderHtml(meta: Meta, args: Args) {
     return `<${tag}${beforeAttributes}${attributes}>${beforeSlots}${slots}${afterSlots}</${tag}>`;
 }
 
-function renderCss(meta: Meta, args: Args){
+function renderCss(meta: Meta, args: Args) {
     const tag = meta.component ?? '*';
     const css = Object.entries(args).map(([key, value]) => isCss(key, value) ? `${key}:${value};` : '').join('').trim();
     return css ? `<style>${tag}{${css}}</style>` : '';
@@ -269,4 +292,8 @@ function isSlot(key: string, value: any) {
 
 function isCss(key: string, value: any) {
     return key[0] === '-' && key[1] === '-' ? value : false;
+}
+
+function toCamelCase(text: string) {
+    return text.split('-').map((word, index) => index === 0 ? word : word.charAt(0).toUpperCase() + word.slice(1)).join('');
 }
