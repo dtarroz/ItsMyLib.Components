@@ -58,6 +58,16 @@ export interface MetaCss {
 }
 
 /**
+ * La documentation sur une méthode d'un composant personnalisé
+ */
+export interface MetaMethod {
+    /** Le nom de la méthode  */
+    name: string;
+    /** La description de la méthode */
+    description: string;
+}
+
+/**
  * La documentation simplifiée d'un composant personnalisé
  */
 export interface MetaData {
@@ -65,10 +75,12 @@ export interface MetaData {
     tag: string;
     /** La description du composant personnalisé */
     description: string;
-    /** La liste des slots du composant personnalisé */
-    slots?: MetaSlot[];
     /** La liste des attributs du composant personnalisé */
     attributes?: MetaAttribute[];
+    /** La liste des slots du composant personnalisé */
+    slots?: MetaSlot[];
+    /** La liste des méthodes */
+    methods?: MetaMethod[];
     /** La liste des événements du composant personnalisé */
     events?: MetaEvent[];
     /** La liste des variables CSS */
@@ -112,6 +124,7 @@ export function makeMeta(metaData: MetaData): Meta {
         argTypes: {
             ...convertAttributes(metaData.attributes),
             ...convertSlots(metaData.slots),
+            ...convertMethods(metaData.methods),
             ...convertProperties(metaData.attributes),
             ...convertEvents(metaData.events),
             ...convertCss(metaData.css)
@@ -154,6 +167,13 @@ function convertEvents(events: MetaEvent[] | undefined) {
 function convertCss(css: MetaCss[] | undefined) {
     return css?.reduce((acc, obj) => {
         acc[obj.name] = convertToCssArgType(obj);
+        return acc;
+    }, {} as { [name: string]: any });
+}
+
+function convertMethods(css: MetaMethod[] | undefined) {
+    return css?.reduce((acc, obj) => {
+        acc[obj.name] = convertToMethodsArgType(obj);
         return acc;
     }, {} as { [name: string]: any });
 }
@@ -232,6 +252,17 @@ function convertToCssArgType(css: MetaCss) {
             defaultValue: {
                 summary: css.defaultValue
             }
+        }
+    };
+}
+
+function convertToMethodsArgType(method: MetaMethod) {
+    return {
+        description: method.description,
+        control: false,
+        type: 'function',
+        table: {
+            category: 'Methods'
         }
     };
 }
