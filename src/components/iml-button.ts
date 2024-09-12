@@ -20,7 +20,7 @@ export class ImlButton extends ImlHTMLElement<TypeCustomEventImlButton> {
     }
 
     protected override renderUpdated() {
-        this.queryShadowSelector('button')?.addEventListener('click', (event) => {
+        this.queryShadowSelector('button')!.addEventListener('click', (event) => {
             if (this.status == 'active') {
                 if (!this.dispatchCustomEvent('iml-button:click', { cancelable: true }))
                     event.preventDefault();
@@ -65,7 +65,6 @@ export class ImlButton extends ImlHTMLElement<TypeCustomEventImlButton> {
             }
             
             .secondary.active:hover {
-                color:  hsl(60, 94%, 47%);
                 border: 1px solid hsl(60, 94%, 47%);
             }
             
