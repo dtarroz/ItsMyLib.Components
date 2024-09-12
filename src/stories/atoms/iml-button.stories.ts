@@ -34,6 +34,12 @@ const meta = makeMeta({
             description: 'Le contenu du bouton'
         }
     ],
+    methods: [
+        {
+            name: 'click',
+            description: 'Déclenche l\'événement `click` sur le bouton'
+        }
+    ],
     events: [
         {
             name: 'iml-button:click',

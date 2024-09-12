@@ -6,6 +6,8 @@ type TypeCustomEventImlButton = 'iml-button:click';
 @customElement('iml-button')
 export class ImlButton extends ImlHTMLElement<TypeCustomEventImlButton> {
 
+    private $button: HTMLButtonElement | null = null;
+
     /** Le mode de rendu du bouton */
     @property() mode: 'primary' | 'secondary' = 'primary';
 
@@ -15,12 +17,18 @@ export class ImlButton extends ImlHTMLElement<TypeCustomEventImlButton> {
     /** L'état du rendu du bouton */
     @property() status: 'active' | 'inactive' | 'disabled' = 'active';
 
+    /** Déclenche l'événement click sur le bouton */
+    override click() {
+        this.$button?.click();
+    }
+
     protected override html() {
         return `<button class="${this.mode} ${this.status}"><slot></slot></button>`;
     }
 
     protected override renderUpdated() {
-        this.queryShadowSelector('button')!.addEventListener('click', (event) => {
+        this.$button = this.queryShadowSelector('button')!;
+        this.$button.addEventListener('click', (event) => {
             if (this.status == 'active') {
                 if (!this.dispatchCustomEvent('iml-button:click', { cancelable: true }))
                     event.preventDefault();
