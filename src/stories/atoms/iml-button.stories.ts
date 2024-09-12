@@ -4,12 +4,6 @@ import '../../components/iml-button.js';
 const meta = makeMeta({
     tag: 'iml-button',
     description: 'Surcharge d\'un `<button>` avec différents modes et comportements',
-    slots: [
-        {
-            name: '><',
-            description: 'Le contenu du bouton'
-        }
-    ],
     attributes: [
         {
             name: 'mode',
@@ -26,10 +20,18 @@ const meta = makeMeta({
             type: 'string'
         },
         {
-            name: 'disabled',
-            description: 'Le bouton est inactif si la valeur est égal à `true`',
-            control: 'boolean',
-            type: 'boolean'
+            name: 'status',
+            description: 'L\'état du rendu du bouton',
+            control: 'radio',
+            options: ['active', 'inactive', 'disabled'],
+            type: 'string',
+            defaultValue: 'active'
+        }
+    ],
+    slots: [
+        {
+            name: '><',
+            description: 'Le contenu du bouton'
         }
     ],
     events: [
@@ -51,9 +53,9 @@ const meta = makeMeta({
 export default { title: 'Atoms/<iml-button>', ...meta };
 
 // noinspection JSUnusedGlobalSymbols
-export const Modes = makeStory({
+export const Active = makeStory({
     meta: meta,
-    description: 'Différents modes de rendu par défaut du bouton',
+    description: 'Différents modes de rendu du bouton actif',
     items: [
         {
             '><': 'Primary'
@@ -66,18 +68,35 @@ export const Modes = makeStory({
 });
 
 // noinspection JSUnusedGlobalSymbols
-export const Disabled = makeStory({
+export const Inactive = makeStory({
     meta: meta,
     description: 'Différents modes de rendu du bouton inactif',
     items: [
         {
             '><': 'Primary',
-            'disabled': true
+            'status': 'inactive'
         },
         {
             '><': 'Secondary',
             'mode': 'secondary',
-            'disabled': true
+            'status': 'inactive'
+        }
+    ]
+});
+
+// noinspection JSUnusedGlobalSymbols
+export const Disabled = makeStory({
+    meta: meta,
+    description: 'Différents modes de rendu du bouton désactivé',
+    items: [
+        {
+            '><': 'Primary',
+            'status': 'disabled'
+        },
+        {
+            '><': 'Secondary',
+            'mode': 'secondary',
+            'status': 'disabled'
         }
     ]
 });
@@ -89,12 +108,17 @@ export const RedirectToUrl = makeStory({
     items: [
         {
             '><': 'Avec redirection',
-            'redirect-to-url': 'https://github.com/dtarroz/ItsMyLib.Components'
+            'redirect-to-url': 'https://www.google.fr'
         },
         {
-            '><': 'Sans redirection',
-            'redirect-to-url': 'https://github.com/dtarroz/ItsMyLib.Components',
-            'disabled': true
+            '><': 'Inactif',
+            'redirect-to-url': 'https://www.google.fr',
+            'status': 'inactive'
+        },
+        {
+            '><': 'Désactivé',
+            'redirect-to-url': 'https://www.google.fr',
+            'status': 'disabled'
         }
     ]
 });

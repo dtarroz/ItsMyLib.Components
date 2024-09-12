@@ -12,28 +12,21 @@ export class ImlButton extends ImlHTMLElement<TypeCustomEventImlButton> {
     /** L'url de redirection après le clic sur le bouton, seulement si l'événement n'a pas été explicitement annulé */
     @property('redirect-to-url') redirectToUrl?: string;
 
-    /** Le bouton est inactif si la valeur est égal à true */
-    @property() disabled: boolean = false;
+    /** L'état du rendu du bouton */
+    @property() status: 'active' | 'inactive' | 'disabled' = 'active';
 
     protected override html() {
-        return `<button class="${this.componentClass()}"><slot></slot></button>`;
-    }
-
-    private componentClass() {
-        let classMap: string[] = [this.mode];
-        if (this.disabled)
-            classMap.push('disabled');
-        return classMap.join(' ');
+        return `<button class="${this.mode} ${this.status}"><slot></slot></button>`;
     }
 
     protected override renderUpdated() {
-        this.queryShadowSelector('button, a')?.addEventListener('click', (event) => {
-            if (this.disabled)
-                return;
-            if (!this.dispatchCustomEvent('iml-button:click', { cancelable: true }))
-                event.preventDefault();
-            else if (this.redirectToUrl)
-                document.location = this.redirectToUrl;
+        this.queryShadowSelector('button')?.addEventListener('click', (event) => {
+            if (this.status == 'active') {
+                if (!this.dispatchCustomEvent('iml-button:click', { cancelable: true }))
+                    event.preventDefault();
+                else if (this.redirectToUrl)
+                    document.location = this.redirectToUrl;
+            }
         });
     }
 
@@ -54,7 +47,6 @@ export class ImlButton extends ImlHTMLElement<TypeCustomEventImlButton> {
                 font-family: Arial, sans-serif;
                 font-weight: bold;
                 font-size: var(--font-size);
-                cursor: pointer;
             }
             
             .primary {
@@ -62,7 +54,7 @@ export class ImlButton extends ImlHTMLElement<TypeCustomEventImlButton> {
                 background-color: hsl(60, 94%, 42%);
             }
             
-            .primary:not(.disabled):hover {
+            .primary.active:hover {
                 background-color: hsl(60, 94%, 47%);
             }
             
@@ -72,8 +64,13 @@ export class ImlButton extends ImlHTMLElement<TypeCustomEventImlButton> {
                 border: 1px solid  #c6c6c6;
             }
             
-            .secondary:not(.disabled):hover {
+            .secondary.active:hover {
+                color:  hsl(60, 94%, 47%);
                 border: 1px solid hsl(60, 94%, 47%);
+            }
+            
+            .active:hover {
+                cursor: pointer;
             }
             
             .disabled {
