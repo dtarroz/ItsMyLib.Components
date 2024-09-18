@@ -25,17 +25,19 @@ jobs:
       uses: bitovi/github-actions-storybook-to-github-pages@v1.0.3
       with:
         path: storybook-static 
-    - name: Transpile Typescript to Production
-      run: npm run production 
-    - name: Preparation dist Production
-      run: mv dist/components dist/itsmylib.components
-    - name: Publish TagHelpers
-      run: dotnet publish 'src/taghelpers/ItsMyLib.Components.TagHelpers/ItsMyLib.Components.TagHelpers.csproj' -c Release -o taghelpers
-    - name: Zip
-      run: zip -r publish.zip taghelpers/ItsMyLib.Components.TagHelpers.dll dist/itsmylib.components
     - name: Generate date string
       id: date
       run: echo "date=$(TZ='Europe/Paris' date +'%y.%m.%d.%H%M')" >> $GITHUB_OUTPUT
+    - name: Transpile Typescript to Production
+      run: npm run production 
+    - name: Preparation dist Production
+      run: |
+           mv dist/components dist/itsmylib.components
+           echo "Version ${{ steps.date.outputs.date }}" > dist/itsmylib.components/version.txt
+    - name: Publish TagHelpers
+      run: dotnet publish 'src/taghelpers/ItsMyLib.Components.TagHelpers/ItsMyLib.Components.TagHelpers.csproj' -c Release -o taghelpers -p:Version=${{ steps.date.outputs.date }} -p:FileVersion=${{ steps.date.outputs.date }} -p:AssemblyVersion=${{ steps.date.outputs.date }}
+    - name: Zip
+      run: zip -r publish.zip taghelpers/ItsMyLib.Components.TagHelpers.dll dist/itsmylib.components
     - name: Get previous tag
       id: prev_tag
       run: echo "tag=$(git describe --tags $(git rev-list --tags --max-count=1))" >> $GITHUB_OUTPUT
