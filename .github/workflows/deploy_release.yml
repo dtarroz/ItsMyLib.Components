@@ -28,11 +28,11 @@ jobs:
     - name: Transpile Typescript to Production
       run: npm run production 
     - name: Preparation dist Production
-      run: mv dist/components dist/itymylib.components
+      run: mv dist/components dist/itsmylib.components
     - name: Publish TagHelpers
-      run: dotnet publish 'src/taghelpers/ItyMyLib.Components.TagHelpers/ItyMyLib.Components.TagHelpers.csproj' -c Release -o taghelpers
+      run: dotnet publish 'src/taghelpers/ItsMyLib.Components.TagHelpers/ItsMyLib.Components.TagHelpers.csproj' -c Release -o taghelpers
     - name: Zip
-      run: zip -r publish.zip taghelpers/ItyMyLib.Components.TagHelpers.dll dist/itymylib.components
+      run: zip -r publish.zip taghelpers/ItsMyLib.Components.TagHelpers.dll dist/itsmylib.components
     - name: Generate date string
       id: date
       run: echo "date=$(TZ='Europe/Paris' date +'%y.%m.%d.%H%M')" >> $GITHUB_OUTPUT

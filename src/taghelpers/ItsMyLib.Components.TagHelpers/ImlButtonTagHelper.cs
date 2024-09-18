@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Razor.TagHelpers;
 
-namespace ItyMyLib.Components.TagHelpers;
+namespace ItsMyLib.Components.TagHelpers;
 
 public enum ImlButtonMode
 {

@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ItyMyLib.Components.TagHelpers", "ItyMyLib.Components.TagHelpers.csproj", "{AC1589A8-9B16-4817-BED6-DD1D8B4C175B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ItsMyLib.Components.TagHelpers", "ItsMyLib.Components.TagHelpers.csproj", "{AC1589A8-9B16-4817-BED6-DD1D8B4C175B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
