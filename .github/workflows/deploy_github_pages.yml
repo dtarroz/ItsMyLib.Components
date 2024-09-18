@@ -51,7 +51,7 @@ jobs:
       uses: svenstaro/upload-release-action@latest
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: ./src/publish.zip
+        file: ./publish.zip
         asset_name: publish.zip
         tag: v${{ steps.date.outputs.date }}
         body: |
