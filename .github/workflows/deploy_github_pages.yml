@@ -27,7 +27,9 @@ jobs:
         path: storybook-static 
     - name: Transpile Typescript to Production
       run: npm run production 
+    - name: Preparation dist Release
+      run: mv dist/components dist/itymylib.components
     - name: Publish TagHelpers
       run: dotnet publish 'src/taghelpers/ItyMyLib.Components.TagHelpers/ItyMyLib.Components.TagHelpers.csproj' -c Release -r linux-x64 --self-contained -o publish
     - name: Zip
-      run: zip -r ../publish.zip publish/ItsMyLib.Components.TagHelpers.dll dist
+      run: zip -r publish.zip publish dist/itymylib.components
