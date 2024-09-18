@@ -12,10 +12,22 @@ permissions:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    steps:
+    steps:     
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 6.0.x
     - id: build-publish
       uses: bitovi/github-actions-storybook-to-github-pages@v1.0.3
       with:
         path: storybook-static 
     - name: Transpile Typescript to Production
-      run: npm run production
+      run: npm run production 
+    - name: Publish TagHelpers
+      run: dotnet publish 'src/taghelpers/ItsMyLib.Components.TagHelpers' -c Release -r linux-x64 --self-contained -o publish
+    - name: Zip
+      run: zip -r ../publish.zip publish/ItsMyLib.Components.TagHelpers.dll dist
