@@ -113,16 +113,16 @@ export const RedirectToUrl = makeStory({
     description: 'Redirection vers une url',
     items: [
         {
-            '><': 'Avec redirection',
+            '><': 'Active',
             'redirect-to-url': 'https://www.google.fr'
         },
         {
-            '><': 'Inactif',
+            '><': 'Inactive',
             'redirect-to-url': 'https://www.google.fr',
             'status': 'inactive'
         },
         {
-            '><': 'Désactivé',
+            '><': 'Disabled',
             'redirect-to-url': 'https://www.google.fr',
             'status': 'disabled'
         }
