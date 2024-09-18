@@ -28,6 +28,6 @@ jobs:
     - name: Transpile Typescript to Production
       run: npm run production 
     - name: Publish TagHelpers
-      run: dotnet publish 'src/taghelpers/ItsMyLib.Components.TagHelpers' -c Release -r linux-x64 --self-contained -o publish
+      run: dotnet publish 'src/taghelpers/ItsMyLib.Components.TagHelpers/ItsMyLib.Components.TagHelpers.csproj' -c Release -r linux-x64 --self-contained -o publish
     - name: Zip
       run: zip -r ../publish.zip publish/ItsMyLib.Components.TagHelpers.dll dist
