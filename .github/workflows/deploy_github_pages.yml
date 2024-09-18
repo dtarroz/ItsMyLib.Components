@@ -27,9 +27,33 @@ jobs:
         path: storybook-static 
     - name: Transpile Typescript to Production
       run: npm run production 
-    - name: Preparation dist Release
+    - name: Preparation dist Production
       run: mv dist/components dist/itymylib.components
     - name: Publish TagHelpers
       run: dotnet publish 'src/taghelpers/ItyMyLib.Components.TagHelpers/ItyMyLib.Components.TagHelpers.csproj' -c Release -o publish
     - name: Zip
-      run: zip -r publish.zip publish dist/itymylib.components
+      run: zip -r publish.zip publish/ItyMyLib.Components.TagHelpers.dll dist/itymylib.components
+    - name: Generate date string
+      id: date
+      run: echo "date=$(TZ='Europe/Paris' date +'%y.%m.%d.%H%M')" >> $GITHUB_OUTPUT
+    - name: Get previous tag
+      id: prev_tag
+      run: echo "tag=$(git describe --tags $(git rev-list --tags --max-count=1))" >> $GITHUB_OUTPUT
+    - name: Get previous commits
+      id: prev_commits
+      run: |
+        if [ -z "${{ steps.prev_tag.outputs.tag }}" ]; then
+          echo commits=$(git log --oneline | tr '\n' '\r\n') >> $GITHUB_OUTPUT
+        else
+          echo commits=$(git log ${{ steps.prev_tag.outputs.tag }}..HEAD --oneline | tr '\n' '\r\n') >> $GITHUB_OUTPUT
+        fi
+    - name: Upload binaries to release
+      uses: svenstaro/upload-release-action@latest
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: ./src/publish.zip
+        asset_name: publish.zip
+        tag: v${{ steps.date.outputs.date }}
+        body: |
+          ## Commits
+          ${{ steps.prev_commits.outputs.commits }}
