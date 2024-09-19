@@ -7,20 +7,20 @@
     "production": "npx tsc"
   },
   "devDependencies": {
-    "@chromatic-com/storybook": "^1.6.1",
-    "@storybook/addon-a11y": "^8.2.9",
-    "@storybook/addon-docs": "^8.2.9",
-    "@storybook/addon-essentials": "^8.2.9",
-    "@storybook/addon-links": "^8.2.9",
-    "@storybook/blocks": "^8.2.9",
-    "@storybook/test": "^8.2.9",
-    "@storybook/web-components": "^8.2.9",
-    "@storybook/web-components-vite": "^8.2.9",
+    "@chromatic-com/storybook": "^1.9.0",
+    "@storybook/addon-a11y": "^8.3.1",
+    "@storybook/addon-docs": "^8.3.1",
+    "@storybook/addon-essentials": "^8.3.1",
+    "@storybook/addon-links": "^8.3.1",
+    "@storybook/blocks": "^8.3.1",
+    "@storybook/test": "^8.3.1",
+    "@storybook/web-components": "^8.3.1",
+    "@storybook/web-components-vite": "^8.3.1",
     "@whitespace/storybook-addon-html": "^6.1.1",
     "esbuild": "^0.23.1",
     "lit": "^3.2.0",
     "storybook": "^8.2.9",
-    "typescript": "^5.5.4",
-    "vite": "^5.4.1"
+    "typescript": "^5.6.2",
+    "vite": "^5.4.6"
   }
 }
