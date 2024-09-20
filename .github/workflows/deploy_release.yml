@@ -37,7 +37,7 @@ jobs:
     - name: Publish TagHelpers
       run: dotnet publish 'src/taghelpers/ItsMyLib.Components.TagHelpers/ItsMyLib.Components.TagHelpers.csproj' -c Release -o taghelpers -p:Version=${{ steps.date.outputs.date }} -p:FileVersion=${{ steps.date.outputs.date }} -p:AssemblyVersion=${{ steps.date.outputs.date }}
     - name: Zip
-      run: zip -r publish.zip taghelpers/ItsMyLib.Components.TagHelpers.dll dist/itsmylib.components
+      run: zip -r ItsMyLib.Components.zip taghelpers/ItsMyLib.Components.TagHelpers.dll dist/itsmylib.components
     - name: Get previous tag
       id: prev_tag
       run: echo "tag=$(git describe --tags $(git rev-list --tags --max-count=1))" >> $GITHUB_OUTPUT
@@ -53,8 +53,8 @@ jobs:
       uses: svenstaro/upload-release-action@latest
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: ./publish.zip
-        asset_name: publish.zip
+        file: ./ItsMyLib.Components.zip
+        asset_name: ItsMyLib.Components.zip
         tag: v${{ steps.date.outputs.date }}
         body: |
           ## Commits

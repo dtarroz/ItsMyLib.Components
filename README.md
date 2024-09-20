@@ -21,7 +21,7 @@ Une bibliothèque de Web Components modulaires et réutilisables pour améliorer
 
 ## Premiers pas
 
-1. **Télécharger la dernière version** : Récupérez la version la plus récente via ce [lien direct](https://github.com/dtarroz/ItsMyLib.Components/releases/latest/download/publish.zip).
+1. **Télécharger la dernière version** : Récupérez la version la plus récente via ce [lien direct](https://github.com/dtarroz/ItsMyLib.Components/releases/latest/download/ItsMyLib.Components.zip).
 2. **Décompresser l'archive** : Extrayez le fichier `.zip` téléchargé.
 3. **Intégrer les fichiers dans votre projet** : Copiez les fichiers du dossier `dist` (par exemple, dans `wwwroot/lib` pour un projet .NET). Ce dossier contient les fichiers nécessaires (`.js` et `.d.ts`).
 4. **Importer un composant** : Pour utiliser un composant, comme le bouton, importez le fichier `itsmylib.components/iml-button.js` dans votre fichier JavaScript ou TypeScript.
