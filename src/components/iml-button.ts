@@ -12,7 +12,7 @@ export class ImlButton extends ImlHTMLElement<TypeCustomEventImlButton> {
     @property() mode: 'primary' | 'secondary' = 'primary';
 
     /** L'url de redirection après le clic sur le bouton, seulement si l'événement n'a pas été explicitement annulé */
-    @property('redirect-to-url') redirectToUrl?: string;
+    @property({ changedCallback: false }) redirectToUrl?: string;
 
     /** L'état du rendu du bouton */
     @property() status: 'active' | 'inactive' | 'disabled' = 'active';

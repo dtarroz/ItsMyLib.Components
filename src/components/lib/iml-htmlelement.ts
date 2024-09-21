@@ -2,7 +2,7 @@
  * Classe de base pour tous les éléments HTML personnalisés et son paramètre générique T représente tous les types de CustomEvent
  * que l'on peut distribuer sur cet élément.
  */
-export class ImlHTMLElement<T extends string> extends HTMLElement {
+export class ImlHTMLElement<T extends string = string> extends HTMLElement {
     constructor() {
         super();
         this.attachShadow({ mode: 'open' });
