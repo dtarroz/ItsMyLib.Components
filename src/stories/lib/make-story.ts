@@ -298,7 +298,9 @@ export function makeStory(storyData: StoryData): StoryObj {
 }
 
 function renderHtml(meta: Meta, args: Args) {
-    const attributes = Object.entries(args).map(([key, value]) => isAttribute(key, value) ? `${key}="${value}"` : '').join(' ').trim();
+    const attributes = Object.entries(args).map(([key, value]) => {
+        return isAttribute(key, value) ? `${key}="${value?.replace(/"/g, '&quot;')}"` : '';
+    }).join(' ').trim();
     const slots = Object.entries(args).map(([key, value]) => isSlot(key, value) ? value : '').join('\n    ').trim();
     const tag = meta.component ?? '';
     const beforeAttributes = attributes ? ' ' : '';
