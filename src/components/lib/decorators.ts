@@ -1,13 +1,20 @@
 import { ImlHTMLElement } from './iml-htmlelement.js';
 
+type PropertyType = 'string' | 'object'
+
 interface PropertyOptions {
-    changedCallback?: string | boolean;
+    /** Indicateur de mise à jour du rendu si la propriété change de valeur, par défaut 'false' */
+    render?: boolean;
+
+    /** Le type de la propriété pour convertir la valeur de l'attribut vers le bon type, par défaut 'string' */
+    type?: PropertyType;
 }
 
 interface PropertyAttribute {
     property: string;
     attribute: string;
-    changedCallback: string;
+    render: boolean;
+    type: PropertyType;
 }
 
 const allPropertiesAttributesByClassName = new Map<string, PropertyAttribute[]>();
@@ -24,7 +31,8 @@ export function customElement(tag: string) {
         if (!(constr.prototype instanceof ImlHTMLElement))
             throw new Error(`Illegal decorator '@customElement' on '${className}', only on class extends ImlHtmlElement`);
 
-        // "class extends" used because the real properties are created in the class and not in the parent class, so I wrap the class to create them after the constructor
+        // "class extends" used because the real properties are created in the class and not in the parent class,
+        // so I wrap the class to create them after the constructor
         const newClassImlHTMLElement = class extends constr {
             constructor(...args: any[]) {
                 super(...args);
@@ -32,17 +40,16 @@ export function customElement(tag: string) {
                 const propertiesAttributes = allPropertiesAttributesByClassName.get(className);
                 if (propertiesAttributes) {
                     for (const propertyAttribute of propertiesAttributes) {
-                        that[`_${propertyAttribute.property}`] = this.getAttribute(propertyAttribute.attribute)
+                        that[`_${propertyAttribute.property}`] = this.convertAttribute(propertyAttribute)
                                                                  ?? that[propertyAttribute.property];
                         Object.defineProperty(this, propertyAttribute.property, {
                             get() {
                                 return this[`_${propertyAttribute.property}`];
                             },
-                            set(newValue) {
-                                const oldValue = this[`_${propertyAttribute.property}`];
-                                this[`_${propertyAttribute.property}`] = newValue;
-                                if (propertyAttribute.changedCallback)
-                                    this[propertyAttribute.changedCallback](propertyAttribute.property, oldValue, newValue);
+                            set(value) {
+                                this[`_${propertyAttribute.property}`] = value;
+                                if (propertyAttribute.render)
+                                    this.render();
                             },
                             enumerable: true,
                             configurable: true
@@ -51,6 +58,15 @@ export function customElement(tag: string) {
                 }
                 this.render();
             }
+
+            private convertAttribute(propertyAttribute: PropertyAttribute) {
+                const value = this.getAttribute(propertyAttribute.attribute);
+                if (value) {
+                    if (propertyAttribute.type == 'object')
+                        return JSON.parse(value);
+                }
+                return value;   // value is null, undefined or string
+            };
         };
 
         // "defineProperty" used because the constructor name was the name of the variable that contains the overriding class
@@ -71,11 +87,11 @@ export function property(options: PropertyOptions | null = null) {
             throw new Error(`Illegal decorator '@property' on '${propertyKey}', only on property`);
 
         const className = target.constructor.name;
-        const changedCallback = options?.changedCallback ?? 'render';
         const propertyAttribute = {
             property: propertyKey,
             attribute: toKebabCase(propertyKey),
-            changedCallback: typeof changedCallback === 'string' ? changedCallback : ''
+            render: options?.render ?? false,
+            type: options?.type ?? 'string'
         };
         if (!allPropertiesAttributesByClassName.has(className))
             allPropertiesAttributesByClassName.set(className, [propertyAttribute]);
