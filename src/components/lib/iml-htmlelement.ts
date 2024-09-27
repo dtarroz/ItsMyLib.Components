@@ -10,7 +10,7 @@ export class ImlHTMLElement<T extends string = string> extends HTMLElement {
 
     /**
      * Rendu HTML du Shadow DOM
-     * 
+     *
      * @override test
      */
     protected html(): string {
@@ -27,11 +27,19 @@ export class ImlHTMLElement<T extends string = string> extends HTMLElement {
 
     // noinspection JSUnusedGlobalSymbols
     protected render() {
+        this.beforeRender();
         this.renderHtml();
         this.renderUpdated();
     }
 
-    protected renderHtml() {
+    /**
+     * Se produit avant chaque mise à jour du rendu HTML du Shadow DOM
+     */
+    protected beforeRender() {
+
+    }
+
+    private renderHtml() {
         this.shadowRoot!.innerHTML = `${this.css()}${this.html()}`;
     }
 
@@ -69,5 +77,17 @@ export class ImlHTMLElement<T extends string = string> extends HTMLElement {
      */
     override addEventListener(type: T, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void {
         super.addEventListener(type, listener, options);
+    }
+
+    // noinspection JSUnusedGlobalSymbols
+    disconnectedCallback() {
+        this.disconnected();
+    }
+
+    /**
+     * Se produit lorsque l'élement HTML personnalisé est retiré du document
+     */
+    protected disconnected() {
+
     }
 }
