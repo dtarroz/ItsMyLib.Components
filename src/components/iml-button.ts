@@ -9,13 +9,13 @@ export class ImlButton extends ImlHTMLElement<TypeCustomEventImlButton> {
     private $button: HTMLButtonElement | null = null;
 
     /** Le mode de rendu du bouton */
-    @property() mode: 'primary' | 'secondary' = 'primary';
+    @property({ render: true }) mode: 'primary' | 'secondary' = 'primary';
 
     /** L'url de redirection après le clic sur le bouton, seulement si l'événement n'a pas été explicitement annulé */
-    @property({ changedCallback: false }) redirectToUrl?: string;
+    @property() redirectToUrl?: string;
 
     /** L'état du rendu du bouton */
-    @property() status: 'active' | 'inactive' | 'disabled' = 'active';
+    @property({ render: true }) status: 'active' | 'inactive' | 'disabled' = 'active';
 
     /** Déclenche l'événement click sur le bouton */
     override click() {
