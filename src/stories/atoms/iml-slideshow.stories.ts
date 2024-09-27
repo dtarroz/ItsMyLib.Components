@@ -40,18 +40,18 @@ const meta = makeMeta({
 // noinspection JSUnusedGlobalSymbols
 export default { title: 'Atoms/<iml-slideshow>', ...meta };
 
-const inactiveImageUrl = 'src/stories/assets/inactive-image.png';
+const inactiveImageUrl = '/inactive-image.png';
 
 const imageUrls = [
-    'src/stories/assets/image1.png',
-    'src/stories/assets/image2.png',
-    'src/stories/assets/image3.png',
-    'src/stories/assets/image4.png',
-    'src/stories/assets/image5.png',
-    'src/stories/assets/image6.png',
-    'src/stories/assets/image7.png',
-    'src/stories/assets/image8.png',
-    'src/stories/assets/image9.png'
+    '/image1.png',
+    '/image2.png',
+    '/image3.png',
+    '/image4.png',
+    '/image5.png',
+    '/image6.png',
+    '/image7.png',
+    '/image8.png',
+    '/image9.png'
 ];
 
 // noinspection JSUnusedGlobalSymbols
@@ -73,10 +73,30 @@ export const Hover = makeStory({
 // noinspection JSUnusedGlobalSymbols
 export const Autoplay = makeStory({
     meta: meta,
-    description: 'Diaporamas activés au survol',
+    description: 'Diaporamas avec lecture automatique',
     items: [
         {
             'mode': 'autoplay',
+            'inactive-image-url': inactiveImageUrl,
+            'image-urls': JSON.stringify(imageUrls)
+        }
+    ]
+});
+
+// noinspection JSUnusedGlobalSymbols
+export const Inactive = makeStory({
+    meta: meta,
+    description: 'Diaporamas inactifs',
+    items: [
+        {
+            'mode': 'hover',
+            'status': 'inactive',
+            'inactive-image-url': inactiveImageUrl,
+            'image-urls': JSON.stringify(imageUrls)
+        },
+        {
+            'mode': 'autoplay',
+            'status': 'inactive',
             'inactive-image-url': inactiveImageUrl,
             'image-urls': JSON.stringify(imageUrls)
         }
