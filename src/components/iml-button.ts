@@ -43,7 +43,6 @@ export class ImlButton extends ImlHTMLElement<TypeCustomEventImlButton> {
         <!--suppress CssUnresolvedCustomProperty -->
         <style>
             :host {
-                --font-size: var(--iml-button-font-size, 0.91rem);
                 width: 150px;
             }
             
@@ -54,7 +53,7 @@ export class ImlButton extends ImlHTMLElement<TypeCustomEventImlButton> {
                 width: 100%;
                 font-family: Arial, sans-serif;
                 font-weight: bold;
-                font-size: var(--font-size);
+                font-size: var(--iml-button-font-size, 0.91rem);
             }
             
             .primary {
