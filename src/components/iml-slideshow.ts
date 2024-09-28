@@ -5,6 +5,7 @@ import { customElement, property } from './lib/decorators.js';
 export class ImlSlideshow extends ImlHTMLElement {
 
     private static _currentHoverImlSlideshow: ImlSlideshow | null = null;
+    private static _observer: IntersectionObserver;
 
     private _indexImage: number = -1;   // -1 inactive image, >= 0 index images slideshow
     private _interval: NodeJS.Timeout | undefined;
@@ -22,15 +23,27 @@ export class ImlSlideshow extends ImlHTMLElement {
     /** Les urls des images qui défilent lors du diaporama */
     @property({ type: 'object' }) imageUrls?: string[];
 
+    static {
+        ImlSlideshow._observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                const target = entry.target as ImlSlideshow;
+                if (!entries[0].isIntersecting && target == ImlSlideshow._currentHoverImlSlideshow)
+                    target._stopHover();
+            });
+        }, { root: null, threshold: 0.5 });
+    }
+
     protected override disconnected() {
         this._clearInterval();
+        ImlSlideshow._observer.unobserve(this);
     }
 
     protected override beforeRender() {
         this._clearInterval();
+        ImlSlideshow._observer.unobserve(this);
     }
-    
-    private _clearInterval(){
+
+    private _clearInterval() {
         clearInterval(this._interval);
         this._indexImage = -1;
     }
@@ -50,9 +63,18 @@ export class ImlSlideshow extends ImlHTMLElement {
     }
 
     private _initHover() {
-        this.$image!.addEventListener('mouseenter', () => this._startHover());
-        this.$image!.addEventListener('touchstart', () => this._startHover());
-        this.$image!.addEventListener('mouseleave', () => this._stopHover());
+        if (this._isCoarsePointer()) {
+            this.$image!.addEventListener('touchstart', () => this._startHover());
+            ImlSlideshow._observer.observe(this);   // stopHover
+        }
+        else {
+            this.$image!.addEventListener('mouseenter', () => this._startHover());
+            this.$image!.addEventListener('mouseleave', () => this._stopHover());
+        }
+    }
+
+    private _isCoarsePointer() {
+        return window.matchMedia('(pointer: coarse)').matches;
     }
 
     private _startHover() {
