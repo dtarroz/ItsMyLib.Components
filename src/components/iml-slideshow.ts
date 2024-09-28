@@ -81,7 +81,8 @@ export class ImlSlideshow extends ImlHTMLElement {
         if (this != ImlSlideshow._currentHoverImlSlideshow) {
             ImlSlideshow._currentHoverImlSlideshow?._stopHover();
             ImlSlideshow._currentHoverImlSlideshow = this;
-            this._nextImage();
+            if (this._isCoarsePointer())
+                this._nextImage();
             this._interval = setInterval(() => this._nextImage(), 700);
         }
     }
