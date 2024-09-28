@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Razor.TagHelpers;
+﻿using System.Text.Json;
+using Microsoft.AspNetCore.Razor.TagHelpers;
 
 namespace ItsMyLib.Components.TagHelpers;
 
@@ -34,6 +35,6 @@ public class ImlSlideshowTagHelper : TagHelper
         if (!string.IsNullOrEmpty(InactiveImageUrl))
             output.Attributes.SetAttribute("inactive-image-url", InactiveImageUrl);
         if ((ImageUrls?.Count ?? 0) > 0)
-            output.Attributes.SetAttribute("image-urls", ImageUrls);
+            output.Attributes.SetAttribute("image-urls", JsonSerializer.Serialize(ImageUrls));
     }
 }
