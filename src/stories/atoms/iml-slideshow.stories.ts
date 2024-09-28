@@ -34,6 +34,13 @@ const meta = makeMeta({
             control: 'object',
             type: 'string'
         }
+    ],
+    css: [
+        {
+            name: '--iml-slideshow-border-radius',
+            description: 'La taille de la bordure de l\'image',
+            defaultValue: '0'
+        }
     ]
 });
 

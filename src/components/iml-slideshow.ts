@@ -126,6 +126,7 @@ export class ImlSlideshow extends ImlHTMLElement {
     protected override css() {
         // "display: flex;" used because space under image and height increase of 5px
         return `
+        <!--suppress CssUnresolvedCustomProperty -->
         <style>
             :host {
                 display: block;
@@ -133,6 +134,7 @@ export class ImlSlideshow extends ImlHTMLElement {
         
             img {
                 display: flex;
+                border-radius: var(--iml-slideshow-border-radius, 0);
                 width: 100%;
                 height: 100%;
             }
