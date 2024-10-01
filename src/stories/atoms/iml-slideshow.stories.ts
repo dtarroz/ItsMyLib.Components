@@ -109,3 +109,27 @@ export const Inactive = makeStory({
         }
     ]
 });
+
+const imageWithErrorUrls = [...imageUrls];
+imageWithErrorUrls[2] = '404.png';
+
+// noinspection JSUnusedGlobalSymbols
+export const ImageError = makeStory({
+    meta: meta,
+    description: 'Diaporamas avec des images en erreur',
+    items: [
+        {
+            'inactive-image-url': inactiveImageUrl,
+            'image-urls': JSON.stringify(imageWithErrorUrls)
+        },
+        {
+            'inactive-image-url': '404.png',
+            'image-urls': JSON.stringify(imageUrls)
+        },
+        {
+            'mode': 'autoplay',
+            'inactive-image-url': inactiveImageUrl,
+            'image-urls': JSON.stringify(imageWithErrorUrls)
+        }
+    ]
+});

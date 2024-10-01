@@ -71,20 +71,28 @@ export class ImlSlideshow extends ImlHTMLElement {
             this.$image!.addEventListener('mouseenter', () => this._startHover());
             this.$image!.addEventListener('mouseleave', () => this._stopHover());
         }
+        this.$image?.addEventListener('error', () => this._errorImage());
     }
 
     private _isCoarsePointer() {
         return window.matchMedia('(pointer: coarse)').matches;
     }
 
+    private _errorImage() {
+        if (this._indexImage != -1) {
+            this._clearInterval();
+            this._updateImage();
+        }
+    }
+
     private _startHover() {
         if (this != ImlSlideshow._currentHoverImlSlideshow) {
             ImlSlideshow._currentHoverImlSlideshow?._stopHover();
             ImlSlideshow._currentHoverImlSlideshow = this;
-            this._preloadImages();
             if (this._isCoarsePointer())
                 this._nextImage();
             this._interval = setInterval(() => this._nextImage(), 700);
+            this._preloadImages();
         }
     }
 
@@ -101,8 +109,8 @@ export class ImlSlideshow extends ImlHTMLElement {
     }
 
     private _startAutoplay() {
-        this._preloadImages();
         this._interval = setInterval(() => this._nextImage(), 700);
+        this._preloadImages();
     }
 
     private _nextImage() {
