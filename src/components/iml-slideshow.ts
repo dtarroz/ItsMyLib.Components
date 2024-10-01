@@ -81,6 +81,7 @@ export class ImlSlideshow extends ImlHTMLElement {
         if (this != ImlSlideshow._currentHoverImlSlideshow) {
             ImlSlideshow._currentHoverImlSlideshow?._stopHover();
             ImlSlideshow._currentHoverImlSlideshow = this;
+            this._preloadImages();
             if (this._isCoarsePointer())
                 this._nextImage();
             this._interval = setInterval(() => this._nextImage(), 700);
@@ -100,6 +101,7 @@ export class ImlSlideshow extends ImlHTMLElement {
     }
 
     private _startAutoplay() {
+        this._preloadImages();
         this._interval = setInterval(() => this._nextImage(), 700);
     }
 
@@ -122,6 +124,15 @@ export class ImlSlideshow extends ImlHTMLElement {
             return this.imageUrls![this._indexImage];
         else
             return undefined;
+    }
+
+    private _preloadImages() {
+        if (this.imageUrls) {
+            for (const imageUrl of this.imageUrls) {
+                const image = new Image();
+                image.src = imageUrl;
+            }
+        }
     }
 
     protected override css() {

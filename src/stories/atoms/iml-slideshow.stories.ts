@@ -47,18 +47,18 @@ const meta = makeMeta({
 // noinspection JSUnusedGlobalSymbols
 export default { title: 'Atoms/<iml-slideshow>', ...meta };
 
-const inactiveImageUrl = './inactive-image.png';
+const inactiveImageUrl = 'inactive-image.png';
 
 const imageUrls = [
-    './image1.png',
-    './image2.png',
-    './image3.png',
-    './image4.png',
-    './image5.png',
-    './image6.png',
-    './image7.png',
-    './image8.png',
-    './image9.png'
+    'image1.png',
+    'image2.png',
+    'image3.png',
+    'image4.png',
+    'image5.png',
+    'image6.png',
+    'image7.png',
+    'image8.png',
+    'image9.png'
 ];
 
 // noinspection JSUnusedGlobalSymbols
