@@ -13,6 +13,10 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
@@ -20,11 +24,8 @@ jobs:
     - id: build-publish
       uses: bitovi/github-actions-storybook-to-github-pages@v1.0.3
       with:
+        checkout: false
         path: storybook-static
-    - name: Checkout
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
     - name: Generate date string
       id: date
       run: echo "date=$(TZ='Europe/Paris' date +'%y.%m.%d.%H%M')" >> $GITHUB_OUTPUT
