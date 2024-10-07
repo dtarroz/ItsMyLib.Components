@@ -31,6 +31,7 @@ public class ImlButtonTagHelper : TagHelper
     public string? RedirectToUrl { get; set; } = null;
 
     public override void Process(TagHelperContext context, TagHelperOutput output) {
+        output.Attributes.SetAttribute("style", "color: transparent");
         output.Attributes.SetAttribute("mode", Mode.ToString());
         output.Attributes.SetAttribute("status", Status.ToString());
         if (!string.IsNullOrEmpty(RedirectToUrl))
