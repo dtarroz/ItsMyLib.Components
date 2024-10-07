@@ -57,6 +57,7 @@ jobs:
         file: ./ItsMyLib.Components.zip
         asset_name: ItsMyLib.Components.zip
         tag: v${{ steps.date.outputs.date }}
+        release_name: v${{ steps.date.outputs.date }}
         body: |
           ## Commits
           ${{ steps.prev_commits.outputs.commits }}
