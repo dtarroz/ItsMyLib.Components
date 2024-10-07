@@ -10,8 +10,6 @@ export class ImlHTMLElement<T extends string = string> extends HTMLElement {
 
     /**
      * Rendu HTML du Shadow DOM
-     *
-     * @override test
      */
     protected html(): string {
         return '';

@@ -65,12 +65,12 @@ export class ImlSlideshow extends ImlHTMLElement {
     private _initHover() {
         if (this._isCoarsePointer()) {
             this.$image!.addEventListener('load', () => this._loadFirstImage(), { once: true });
-            this.$image!.addEventListener('touchstart', () => this._startHover());
+            this.addEventListener('touchstart', () => this._startHover());
             ImlSlideshow._observer.observe(this);   // stopHover
         }
         else {
-            this.$image!.addEventListener('mouseenter', () => this._startHover());
-            this.$image!.addEventListener('mouseleave', () => this._stopHover());
+            this.addEventListener('mouseenter', () => this._startHover());
+            this.addEventListener('mouseleave', () => this._stopHover());
         }
         this.$image?.addEventListener('error', () => this._errorImage());
     }
@@ -156,11 +156,16 @@ export class ImlSlideshow extends ImlHTMLElement {
         return `
         <!--suppress CssUnresolvedCustomProperty -->
         <style>
+            :host {
+                display: block;
+            }
+            
             img {
                 display: flex;
                 border-radius: var(--iml-slideshow-border-radius, 0);
                 width: 100%;
                 height: 100%;
+                pointer-events: none;
             }
         </style>`;
     }
