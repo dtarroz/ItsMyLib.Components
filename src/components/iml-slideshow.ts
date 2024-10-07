@@ -27,7 +27,7 @@ export class ImlSlideshow extends ImlHTMLElement {
         ImlSlideshow._observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 const target = entry.target as ImlSlideshow;
-                if (!entries[0].isIntersecting && target == ImlSlideshow._currentHoverImlSlideshow)
+                if (!entry.isIntersecting && target == ImlSlideshow._currentHoverImlSlideshow)
                     target._stopHover();
             });
         }, { root: null, threshold: 0.5 });
@@ -49,7 +49,7 @@ export class ImlSlideshow extends ImlHTMLElement {
     }
 
     protected override html() {
-        return `<img src="${this._currentImageUrl}" alt="" loading="lazy" />`;
+        return `<img src="${this._currentImageUrl ?? ""}" alt="" loading="lazy" />`;
     }
 
     protected override renderUpdated() {
@@ -64,6 +64,7 @@ export class ImlSlideshow extends ImlHTMLElement {
 
     private _initHover() {
         if (this._isCoarsePointer()) {
+            this.$image!.addEventListener('load', () => this._loadFirstImage(), { once: true });
             this.$image!.addEventListener('touchstart', () => this._startHover());
             ImlSlideshow._observer.observe(this);   // stopHover
         }
@@ -76,6 +77,13 @@ export class ImlSlideshow extends ImlHTMLElement {
 
     private _isCoarsePointer() {
         return window.matchMedia('(pointer: coarse)').matches;
+    }
+
+    private _loadFirstImage() {
+        if ((this.imageUrls?.length ?? 0) >= 1) {
+            const image = new Image();
+            image.src = this.imageUrls![0];
+        }
     }
 
     private _errorImage() {
@@ -148,10 +156,6 @@ export class ImlSlideshow extends ImlHTMLElement {
         return `
         <!--suppress CssUnresolvedCustomProperty -->
         <style>
-            :host {
-                display: block;
-            }
-        
             img {
                 display: flex;
                 border-radius: var(--iml-slideshow-border-radius, 0);
