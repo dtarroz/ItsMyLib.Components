@@ -65,7 +65,7 @@ export class ImlSlideshow extends ImlHTMLElement {
     private _initHover() {
         if (this._isCoarsePointer()) {
             this.$image!.addEventListener('load', () => this._loadFirstImage(), { once: true });
-            this.addEventListener('touchstart', () => this._startHover());
+            this.addEventListener('touchmove', () => this._startHover());
             ImlSlideshow._observer.observe(this);   // stopHover
         }
         else {
