@@ -21,6 +21,15 @@ public enum ImlSlideshowStatus
     inactive
 }
 
+public enum ImlSlideshowLoading
+{
+    // ReSharper disable once InconsistentNaming
+    lazy,
+
+    // ReSharper disable once InconsistentNaming
+    eager
+}
+
 [HtmlTargetElement("iml-slideshow")]
 public class ImlSlideshowTagHelper : TagHelper
 {
@@ -28,6 +37,7 @@ public class ImlSlideshowTagHelper : TagHelper
     public ImlSlideshowStatus Status { get; set; } = ImlSlideshowStatus.active;
     public string? DefaultImageUrl { get; set; } = null;
     public List<string>? ImageUrls { get; set; } = null;
+    public ImlSlideshowLoading Loading { get; set; } = ImlSlideshowLoading.lazy;
 
     public override void Process(TagHelperContext context, TagHelperOutput output) {
         output.Attributes.SetAttribute("mode", Mode.ToString());
@@ -36,5 +46,6 @@ public class ImlSlideshowTagHelper : TagHelper
             output.Attributes.SetAttribute("default-image-url", DefaultImageUrl);
         if ((ImageUrls?.Count ?? 0) > 0)
             output.Attributes.SetAttribute("image-urls", JsonSerializer.Serialize(ImageUrls));
+        output.Attributes.SetAttribute("loading", Loading.ToString());
     }
 }

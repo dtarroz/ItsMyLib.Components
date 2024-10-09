@@ -22,6 +22,9 @@ export class ImlSlideshow extends ImlHTMLElement {
 
     /** Les urls des images qui défilent lors du diaporama */
     @property({ type: 'object' }) imageUrls?: string[];
+    
+    /** Mode de chargement des images */
+    @property({ render: true }) loading: 'lazy' | 'eager' = 'lazy';
 
     static {
         ImlSlideshow._observer = new IntersectionObserver((entries) => {
@@ -53,7 +56,7 @@ export class ImlSlideshow extends ImlHTMLElement {
     }
 
     protected override html() {
-        return `<img src="${this._currentImageUrl ?? ""}" alt="" loading="lazy" />`;
+        return `<img src="${this._currentImageUrl ?? ""}" alt="" loading="${this.loading}" />`;
     }
 
     protected override renderUpdated() {

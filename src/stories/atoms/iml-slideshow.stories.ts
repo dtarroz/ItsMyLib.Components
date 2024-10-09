@@ -33,6 +33,14 @@ const meta = makeMeta({
             description: 'Les urls des images qui défilent lors du diaporama',
             control: 'object',
             type: 'string'
+        },
+        {
+            name: 'loading',
+            description: 'Mode de chargement des images',
+            control: 'radio',
+            options: ['lazy', 'eager'],
+            type: 'string',
+            defaultValue: 'lazy'
         }
     ],
     css: [
