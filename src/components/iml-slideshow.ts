@@ -156,10 +156,6 @@ export class ImlSlideshow extends ImlHTMLElement {
         return `
         <!--suppress CssUnresolvedCustomProperty -->
         <style>
-            :host {
-                display: block;
-            }
-            
             img {
                 display: flex;
                 border-radius: var(--iml-slideshow-border-radius, 0);
