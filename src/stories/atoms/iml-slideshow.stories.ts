@@ -23,8 +23,8 @@ const meta = makeMeta({
             defaultValue: 'active'
         },
         {
-            name: 'inactive-image-url',
-            description: 'L\'url de l\'image lorsque le diaporama est inactif',
+            name: 'default-image-url',
+            description: 'L\'url par défaut de l\'image lorsque le diaporama est à l\'arrêt',
             control: 'text',
             type: 'string'
         },
@@ -47,7 +47,7 @@ const meta = makeMeta({
 // noinspection JSUnusedGlobalSymbols
 export default { title: 'Atoms/<iml-slideshow>', ...meta };
 
-const inactiveImageUrl = 'inactive-image.png';
+const defaultImageUrl = 'default-image.png';
 
 const imageUrls = [
     'image1.png',
@@ -67,11 +67,11 @@ export const Hover = makeStory({
     description: 'Diaporamas activés au survol',
     items: [
         {
-            'inactive-image-url': inactiveImageUrl,
+            'default-image-url': defaultImageUrl,
             'image-urls': JSON.stringify(imageUrls)
         },
         {
-            'inactive-image-url': inactiveImageUrl,
+            'default-image-url': defaultImageUrl,
             'image-urls': JSON.stringify(imageUrls)
         }
     ]
@@ -84,7 +84,7 @@ export const Autoplay = makeStory({
     items: [
         {
             'mode': 'autoplay',
-            'inactive-image-url': inactiveImageUrl,
+            'default-image-url': defaultImageUrl,
             'image-urls': JSON.stringify(imageUrls)
         }
     ]
@@ -98,13 +98,13 @@ export const Inactive = makeStory({
         {
             'mode': 'hover',
             'status': 'inactive',
-            'inactive-image-url': inactiveImageUrl,
+            'default-image-url': defaultImageUrl,
             'image-urls': JSON.stringify(imageUrls)
         },
         {
             'mode': 'autoplay',
             'status': 'inactive',
-            'inactive-image-url': inactiveImageUrl,
+            'default-image-url': defaultImageUrl,
             'image-urls': JSON.stringify(imageUrls)
         }
     ]
@@ -119,16 +119,16 @@ export const ImageError = makeStory({
     description: 'Diaporamas avec des images en erreur',
     items: [
         {
-            'inactive-image-url': inactiveImageUrl,
+            'default-image-url': defaultImageUrl,
             'image-urls': JSON.stringify(imageWithErrorUrls)
         },
         {
-            'inactive-image-url': '404.png',
+            'default-image-url': '404.png',
             'image-urls': JSON.stringify(imageUrls)
         },
         {
             'mode': 'autoplay',
-            'inactive-image-url': inactiveImageUrl,
+            'default-image-url': defaultImageUrl,
             'image-urls': JSON.stringify(imageWithErrorUrls)
         }
     ]

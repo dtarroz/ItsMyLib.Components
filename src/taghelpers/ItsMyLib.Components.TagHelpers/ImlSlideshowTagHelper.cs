@@ -26,14 +26,14 @@ public class ImlSlideshowTagHelper : TagHelper
 {
     public ImlSlideshowMode Mode { get; set; } = ImlSlideshowMode.hover;
     public ImlSlideshowStatus Status { get; set; } = ImlSlideshowStatus.active;
-    public string? InactiveImageUrl { get; set; } = null;
+    public string? DefaultImageUrl { get; set; } = null;
     public List<string>? ImageUrls { get; set; } = null;
 
     public override void Process(TagHelperContext context, TagHelperOutput output) {
         output.Attributes.SetAttribute("mode", Mode.ToString());
         output.Attributes.SetAttribute("status", Status.ToString());
-        if (!string.IsNullOrEmpty(InactiveImageUrl))
-            output.Attributes.SetAttribute("inactive-image-url", InactiveImageUrl);
+        if (!string.IsNullOrEmpty(DefaultImageUrl))
+            output.Attributes.SetAttribute("default-image-url", DefaultImageUrl);
         if ((ImageUrls?.Count ?? 0) > 0)
             output.Attributes.SetAttribute("image-urls", JsonSerializer.Serialize(ImageUrls));
     }
