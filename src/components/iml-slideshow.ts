@@ -31,6 +31,10 @@ export class ImlSlideshow extends ImlHTMLElement {
                     target._stopHover();
             });
         }, { root: null, threshold: 0.5 });
+        document.addEventListener('visibilitychange', function () {
+            if (document.visibilityState === 'hidden')
+                ImlSlideshow._currentHoverImlSlideshow?._stopHover();
+        });
     }
 
     protected override disconnected() {
