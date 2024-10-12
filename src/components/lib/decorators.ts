@@ -1,6 +1,6 @@
-import { ImlHTMLElement } from './iml-htmlelement.js';
+import { ImlHTMLElement } from './iml-html-element.js';
 
-type PropertyType = 'string' | 'object'
+type PropertyType = 'string' | 'object' | 'number';
 
 interface PropertyOptions {
     /** Indicateur de mise à jour du rendu si la propriété change de valeur, par défaut 'false' */
@@ -26,10 +26,10 @@ const allPropertiesAttributesByClassName = new Map<string, PropertyAttribute[]>(
  */
 export function customElement(tag: string) {
     return <T extends { new(...params: any[]): ImlHTMLElement }>(constr: T) => {
-        const className = constr.prototype.constructor.name;
+        const constructorName = constr.prototype.constructor.name;
 
         if (!(constr.prototype instanceof ImlHTMLElement))
-            throw new Error(`Illegal decorator '@customElement' on '${className}', only on class extends ImlHtmlElement`);
+            throw new Error(`Illegal decorator '@customElement' on '${constructorName}', only on class extends ImlHtmlElement`);
 
         // "class extends" used because the real properties are created in the class and not in the parent class,
         // so I wrap the class to create them after the constructor
@@ -37,23 +37,25 @@ export function customElement(tag: string) {
             constructor(...args: any[]) {
                 super(...args);
                 const that: any = this;
-                const propertiesAttributes = allPropertiesAttributesByClassName.get(className);
-                if (propertiesAttributes) {
-                    for (const propertyAttribute of propertiesAttributes) {
-                        that[`_${propertyAttribute.property}`] = this.convertAttribute(propertyAttribute)
-                                                                 ?? that[propertyAttribute.property];
-                        Object.defineProperty(this, propertyAttribute.property, {
-                            get() {
-                                return this[`_${propertyAttribute.property}`];
-                            },
-                            set(value) {
-                                this[`_${propertyAttribute.property}`] = value;
-                                if (propertyAttribute.render)
-                                    this.render();
-                            },
-                            enumerable: true,
-                            configurable: true
-                        });
+                for (const className of getClasses(constr)) {
+                    const propertiesAttributes = allPropertiesAttributesByClassName.get(className);
+                    if (propertiesAttributes) {
+                        for (const propertyAttribute of propertiesAttributes) {
+                            that[`_${propertyAttribute.property}`] = this.convertAttribute(propertyAttribute)
+                                                                     ?? that[propertyAttribute.property];
+                            Object.defineProperty(this, propertyAttribute.property, {
+                                get() {
+                                    return this[`_${propertyAttribute.property}`];
+                                },
+                                set(value) {
+                                    this[`_${propertyAttribute.property}`] = value;
+                                    if (propertyAttribute.render)
+                                        this.render();
+                                },
+                                enumerable: true,
+                                configurable: true
+                            });
+                        }
                     }
                 }
                 this.render();
@@ -64,13 +66,15 @@ export function customElement(tag: string) {
                 if (value) {
                     if (propertyAttribute.type == 'object')
                         return JSON.parse(value);
+                    if (propertyAttribute.type == 'number')
+                        return Number(value);
                 }
                 return value;   // value is null, undefined or string
             };
         };
 
         // "defineProperty" used because the constructor name was the name of the variable that contains the overriding class
-        Object.defineProperty(newClassImlHTMLElement, 'name', { value: className });
+        Object.defineProperty(newClassImlHTMLElement, 'name', { value: constructorName });
 
         customElements.define(tag, newClassImlHTMLElement);
     };
@@ -102,4 +106,16 @@ export function property(options: PropertyOptions | null = null) {
 
 function toKebabCase(text: string) {
     return text.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
+}
+
+function getClasses(obj: { new(...params: any[]): ImlHTMLElement }) {
+    const classes = [];
+    let current = obj.prototype;
+    while (current && current.constructor.name != 'HTMLElement') {
+        const constructor = current.constructor;
+        if (constructor && constructor.name)
+            classes.push(constructor.name);
+        current = Object.getPrototypeOf(current);
+    }
+    return classes;
 }

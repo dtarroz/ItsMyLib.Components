@@ -299,7 +299,7 @@ export function makeStory(storyData: StoryData): StoryObj {
 
 function renderHtml(meta: Meta, args: Args) {
     const attributes = Object.entries(args).map(([key, value]) => {
-        return isAttribute(key, value) ? `${key}="${value?.replace(/"/g, '&quot;')}"` : '';
+        return isAttribute(key, value) ? `${key}="${convertToValueAttribute(value)}"` : '';
     }).join(' ').trim();
     const slots = Object.entries(args).map(([key, value]) => isSlot(key, value) ? value : '').join('\n    ').trim();
     const tag = meta.component ?? '';
@@ -329,4 +329,10 @@ function isCss(key: string, value: any) {
 
 function toCamelCase(text: string) {
     return text.split('-').map((word, index) => index === 0 ? word : word.charAt(0).toUpperCase() + word.slice(1)).join('');
+}
+
+function convertToValueAttribute(value: any) {
+    if (typeof (value) == 'string')
+        return value?.replace(/"/g, '&quot;');
+    return value;
 }

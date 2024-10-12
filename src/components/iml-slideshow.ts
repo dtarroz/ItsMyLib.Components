@@ -1,4 +1,4 @@
-import { ImlHTMLElement } from './lib/iml-htmlelement.js';
+import { ImlHTMLElement } from './lib/iml-html-element.js';
 import { customElement, property } from './lib/decorators.js';
 
 @customElement('iml-slideshow')
