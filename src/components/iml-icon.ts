@@ -8,7 +8,7 @@ export class ImlIcon extends ImlIconElement {
     @property({ render: true }) name: 'arrow' = 'arrow';
     
     protected override html() {
-        return `<iml-icon-${this.name} width="${this.width}" height="${this.height}"></iml-icon-${this.name}>`;
+        return `<iml-icon-${this.name}></iml-icon-${this.name}>`;
     }
 
 }
