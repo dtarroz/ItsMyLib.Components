@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Razor.TagHelpers;
+﻿using System.Text.RegularExpressions;
+using Microsoft.AspNetCore.Razor.TagHelpers;
 
 namespace ItsMyLib.Components.TagHelpers;
 
@@ -26,7 +27,7 @@ public class ImlIconTagHelper : TagHelper
         output.Attributes.SetAttribute("name", ToKebabCase(Name.ToString()));
     }
 
-    private string ToKebabCase(string text) {
+    private static string ToKebabCase(string text) {
         return Regex.Replace(text, "([a-z])([A-Z])", "$1-$2").ToLower();
     }
 }
