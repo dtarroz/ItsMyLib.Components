@@ -1,6 +1,7 @@
 import { makeMeta, makeStory } from '../lib/make-story.js';
 import '../../components/iml-icon.js';
 import '../../components/iml-icon-arrow.js';
+import '../../components/iml-icon-search.js';
 
 const meta = makeMeta({
     tag: 'iml-icon',
@@ -10,7 +11,7 @@ const meta = makeMeta({
             name: 'name',
             description: 'Le nom de l\'icône',
             control: 'select',
-            options: ['arrow'],
+            options: ['arrow', 'search'],
             type: 'string',
             defaultValue: 'arrow'
         },
@@ -35,6 +36,10 @@ export const Default = makeStory({
     items: [
         {
             'name': 'arrow',
+            'style': style
+        },
+        {
+            'name': 'search',
             'style': style
         }
     ]

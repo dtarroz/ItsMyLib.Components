@@ -5,7 +5,10 @@ namespace ItsMyLib.Components.TagHelpers;
 public enum ImlIconName
 {
     // ReSharper disable once InconsistentNaming
-    arrow
+    arrow,
+
+    // ReSharper disable once InconsistentNaming
+    search
 }
 
 [HtmlTargetElement("iml-icon")]
