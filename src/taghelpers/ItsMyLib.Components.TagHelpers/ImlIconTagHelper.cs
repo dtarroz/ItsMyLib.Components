@@ -15,7 +15,10 @@ public enum ImlIconName
     circlePlus,
 
     // ReSharper disable once InconsistentNaming
-    filter
+    filter,
+
+    // ReSharper disable once InconsistentNaming
+    cross
 }
 
 [HtmlTargetElement("iml-icon")]
