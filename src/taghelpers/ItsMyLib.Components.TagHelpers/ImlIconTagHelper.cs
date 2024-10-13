@@ -18,7 +18,16 @@ public enum ImlIconName
     filter,
 
     // ReSharper disable once InconsistentNaming
-    cross
+    cross,
+
+    // ReSharper disable once InconsistentNaming
+    love,
+
+    // ReSharper disable once InconsistentNaming
+    like,
+
+    // ReSharper disable once InconsistentNaming
+    share
 }
 
 [HtmlTargetElement("iml-icon")]
