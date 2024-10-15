@@ -29,6 +29,9 @@ public enum ImlIconName
     // ReSharper disable once InconsistentNaming
     unlike,
 
+	// ReSharper disable once InconsistentNaming
+    transparent,
+
     // ReSharper disable once InconsistentNaming
     share
 }

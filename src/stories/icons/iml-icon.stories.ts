@@ -8,6 +8,7 @@ import '../../components/iml-icon-cross.js';
 import '../../components/iml-icon-love.js';
 import '../../components/iml-icon-like.js';
 import '../../components/iml-icon-unlike.js';
+import '../../components/iml-icon-transparent.js';
 import '../../components/iml-icon-share.js';
 
 const meta = makeMeta({
@@ -18,7 +19,7 @@ const meta = makeMeta({
             name: 'name',
             description: 'Le nom de l\'icône',
             control: 'select',
-            options: ['arrow', 'search', 'circle-plus', 'filter', 'cross', 'love', 'like', 'unlike', 'share'],
+            options: ['arrow', 'search', 'circle-plus', 'filter', 'cross', 'love', 'like', 'unlike', 'transparent', 'share'],
             type: 'string',
             defaultValue: 'arrow'
         },
@@ -71,6 +72,10 @@ export const Default = makeStory({
         },
         {
             'name': 'unlike',
+            'style': style
+        },
+        {
+            'name': 'transparent',
             'style': style
         },
         {

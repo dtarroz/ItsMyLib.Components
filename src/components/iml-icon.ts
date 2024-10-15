@@ -5,7 +5,7 @@ import { customElement, property } from './lib/decorators.js';
 export class ImlIcon extends ImlIconElement {
 
     /** Le nom de l'icône */
-    @property({ render: true }) name: 'arrow' | 'search' | 'circle-plus' | 'filter' | 'cross' | 'love' | 'like' | 'unlike' 
+    @property({ render: true }) name: 'arrow' | 'search' | 'circle-plus' | 'filter' | 'cross' | 'love' | 'like' | 'unlike' | 'transparent'
                                       | 'share' = 'arrow';
 
     protected override html() {
