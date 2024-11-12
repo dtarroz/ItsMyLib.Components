@@ -10,6 +10,8 @@ import '../../components/iml-icon-like.js';
 import '../../components/iml-icon-unlike.js';
 import '../../components/iml-icon-transparent.js';
 import '../../components/iml-icon-share.js';
+import '../../components/iml-icon-pen.js';
+import '../../components/iml-icon-trash.js';
 
 const meta = makeMeta({
     tag: 'iml-icon',
@@ -19,7 +21,7 @@ const meta = makeMeta({
             name: 'name',
             description: 'Le nom de l\'icône',
             control: 'select',
-            options: ['arrow', 'search', 'circle-plus', 'filter', 'cross', 'love', 'like', 'unlike', 'transparent', 'share'],
+            options: ['arrow', 'search', 'circle-plus', 'filter', 'cross', 'love', 'like', 'unlike', 'transparent', 'share', 'pen', 'trash'],
             type: 'string',
             defaultValue: 'arrow'
         },
@@ -80,6 +82,14 @@ export const Default = makeStory({
         },
         {
             'name': 'share',
+            'style': style
+        },
+        {
+            'name': 'pen',
+            'style': style
+        },
+        {
+            'name': 'trash',
             'style': style
         }
     ]
