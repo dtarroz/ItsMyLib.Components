@@ -33,7 +33,16 @@ public enum ImlIconName
     transparent,
 
     // ReSharper disable once InconsistentNaming
-    share
+    share,
+
+    // ReSharper disable once InconsistentNaming
+    pen,
+
+    // ReSharper disable once InconsistentNaming
+    trash,
+
+    // ReSharper disable once InconsistentNaming
+    penSquare
 }
 
 [HtmlTargetElement("iml-icon")]
