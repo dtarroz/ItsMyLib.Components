@@ -8,7 +8,7 @@ export class ImlSlideshow extends ImlHTMLElement {
     private static _observer: IntersectionObserver;
 
     private _indexImage: number = -1;   // -1 default image, >= 0 index images slideshow
-    private _interval: NodeJS.Timeout | undefined;
+    private _interval: number | undefined;
     private $image: HTMLImageElement | null = null;
 
     /** Le mode de lecture du diaporama */
