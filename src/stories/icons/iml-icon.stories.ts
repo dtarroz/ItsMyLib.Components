@@ -13,6 +13,7 @@ import '../../components/iml-icon-share.js';
 import '../../components/iml-icon-pen.js';
 import '../../components/iml-icon-trash.js';
 import '../../components/iml-icon-pen-square.js';
+import '../../components/iml-icon-forbidden.js';
 
 const meta = makeMeta({
     tag: 'iml-icon',
@@ -23,7 +24,7 @@ const meta = makeMeta({
             description: 'Le nom de l\'icône',
             control: 'select',
             options: ['arrow', 'search', 'circle-plus', 'filter', 'cross', 'love', 'like', 'unlike', 'transparent', 'share', 'pen', 'trash',
-                      'pen-square'],
+                      'pen-square', 'forbidden'],
             type: 'string',
             defaultValue: 'arrow'
         },
@@ -96,6 +97,10 @@ export const Default = makeStory({
         },
         {
             'name': 'pen-square',
+            'style': style
+        },
+        {
+            'name': 'forbidden',
             'style': style
         }
     ]

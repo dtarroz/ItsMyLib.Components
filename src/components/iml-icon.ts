@@ -6,7 +6,7 @@ export class ImlIcon extends ImlIconElement {
 
     /** Le nom de l'icône */
     @property({ render: true }) name: 'arrow' | 'search' | 'circle-plus' | 'filter' | 'cross' | 'love' | 'like' | 'unlike' | 'transparent'
-                                      | 'share' | 'pen' | 'trash' | 'pen-square' = 'arrow';
+                                      | 'share' | 'pen' | 'trash' | 'pen-square' | 'forbidden' = 'arrow';
 
     protected override html() {
         return `<iml-icon-${this.name}></iml-icon-${this.name}>`;
