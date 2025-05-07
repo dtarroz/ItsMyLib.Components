@@ -45,7 +45,10 @@ public enum ImlIconName
     penSquare,
 
     // ReSharper disable once InconsistentNaming
-    forbidden
+    forbidden,
+
+    // ReSharper disable once InconsistentNaming
+    ai
 }
 
 [HtmlTargetElement("iml-icon")]
