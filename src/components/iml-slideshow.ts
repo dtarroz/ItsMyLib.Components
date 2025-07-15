@@ -61,12 +61,19 @@ export class ImlSlideshow extends ImlHTMLElement {
 
     protected override renderUpdated() {
         this.$image = this.queryShadowSelector('img')!;
+        this._hiddenImage404();
         if (this.status == 'active') {
             if (this.mode == 'hover')
                 this._initHover();
             else
                 this._startAutoplay();
         }
+    }
+    
+    private _hiddenImage404(){
+        this.$image?.addEventListener('error', () => {
+            this.$image!.style.display = 'none';
+        });
     }
 
     private _initHover() {
@@ -121,6 +128,7 @@ export class ImlSlideshow extends ImlHTMLElement {
         const imageUrl = this._currentImageUrl;
         if (imageUrl)
             this.$image!.src = imageUrl;
+            this.$image!.style.display = '';
     }
 
     private _startAutoplay() {
