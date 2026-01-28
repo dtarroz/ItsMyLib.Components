@@ -97,6 +97,10 @@ export interface StoryData {
     description: string;
     /** La liste des attributs des composants personnalisés */
     items?: Args[];
+    /** Contenu HTML avant les composants */
+    htmlBefore?: string;
+    /** Balise script */
+    script?: string;
 }
 
 /**
@@ -273,12 +277,14 @@ function convertToMethodsArgType(method: MetaMethod) {
  */
 export function makeStory(storyData: StoryData): StoryObj {
     const renderStory = (args: Args, preview: boolean) => {
+        const before = storyData.htmlBefore ?? '';
         const css = renderCss(storyData.meta, args);
         const primary = renderHtml(storyData.meta, args);
         const others = (storyData.items ?? []).slice(1).map(a => renderHtml(storyData.meta, a)) ?? [];
         const components = [primary, ...others].join(preview ? '\n' : '');
         const html = others.length > 0 && !preview ? `<div class="iml-sb-preview">${components}</div>` : components;
-        return !preview ? `${css}${html}` : html;
+        const script = storyData.script ? `<script>${storyData.script}</script>` : '';
+        return !preview ? `${before}${css}${html}${script}` : html;
     };
     return {
         render: (args: Args) => renderStory(args, false),
