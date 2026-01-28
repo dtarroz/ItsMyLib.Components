@@ -1,6 +1,6 @@
 import { ImlHTMLElement } from './iml-html-element.js';
 
-type PropertyType = 'string' | 'object' | 'number';
+type PropertyType = 'string' | 'object' | 'number' | 'boolean';
 
 interface PropertyOptions {
     /** Indicateur de mise à jour du rendu si la propriété change de valeur, par défaut 'false' */
@@ -8,6 +8,9 @@ interface PropertyOptions {
 
     /** Le type de la propriété pour convertir la valeur de l'attribut vers le bon type, par défaut 'string' */
     type?: PropertyType;
+
+    /** Le nom de la méthode de rappel lors de la modification de l'attribut */
+    changedCallback?: string;
 }
 
 interface PropertyAttribute {
@@ -15,6 +18,7 @@ interface PropertyAttribute {
     attribute: string;
     render: boolean;
     type: PropertyType;
+    changedCallback: string;
 }
 
 const allPropertiesAttributesByClassName = new Map<string, PropertyAttribute[]>();
@@ -46,10 +50,13 @@ export function customElement(tag: string) {
                             get() {
                                 return this[`_${propertyAttribute.property}`];
                             },
-                            set(value) {
-                                this[`_${propertyAttribute.property}`] = value;
+                            set(newValue) {
+                                const oldValue = this[`_${propertyAttribute.property}`];
+                                this[`_${propertyAttribute.property}`] = newValue;
                                 if (propertyAttribute.render)
                                     this.render();
+                                if (propertyAttribute.changedCallback)
+                                    this[propertyAttribute.changedCallback](propertyAttribute.property, oldValue, newValue);
                             },
                             enumerable: true,
                             configurable: true
@@ -66,6 +73,8 @@ export function customElement(tag: string) {
                         return JSON.parse(value);
                     if (propertyAttribute.type == 'number')
                         return Number(value);
+                    if (propertyAttribute.type == 'boolean')
+                        return value === 'true';
                 }
                 return value;   // value is null, undefined or string
             };
@@ -93,7 +102,8 @@ export function property(options: PropertyOptions | null = null) {
             property: propertyKey,
             attribute: toKebabCase(propertyKey),
             render: options?.render ?? false,
-            type: options?.type ?? 'string'
+            type: options?.type ?? 'string',
+            changedCallback: options?.changedCallback ?? ''
         };
         if (!allPropertiesAttributesByClassName.has(className))
             allPropertiesAttributesByClassName.set(className, [propertyAttribute]);
