@@ -43,6 +43,7 @@ export class ImlButton extends ImlHTMLElement<TypeCustomEventImlButton> {
         <!--suppress CssUnresolvedCustomProperty -->
         <style>
             :host {
+                display: inline-block;
                 width: 150px;
             }
             
