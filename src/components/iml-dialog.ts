@@ -15,7 +15,7 @@ export class ImlDialog extends ImlHTMLElement {
     /** Affiche ou non le bouton de fermeture */
     @property({ type: 'boolean', changedCallback: '_updateAttribut' }) closeButton: boolean = true;
 
-    /** L'état du rendu du bouton */
+    /** L'état du rendu de la boite de dialogue */
     @property() size: 'x-small' | 'small' | 'large' = 'small';
 
     /** Affiche la boite de dialogue modale */
@@ -65,7 +65,6 @@ export class ImlDialog extends ImlHTMLElement {
 
     protected override css() {
         return `
-            <!--suppress CssUnresolvedCustomProperty -->
             <style>
                 :host {
                     position: fixed;
@@ -172,6 +171,10 @@ export class ImlDialog extends ImlHTMLElement {
                 @media (max-height: 550px) {
                     .dialog {
                         width: 400px;
+                    }
+
+                    .header-title {
+                        font-size: 1.2rem;
                     }
                 }
                 
