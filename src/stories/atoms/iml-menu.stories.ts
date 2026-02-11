@@ -1,7 +1,6 @@
 import { makeMeta, makeStory } from '../lib/make-story.js';
 import '../../components/iml-menu.js';
 import '../../components/iml-icon.js';
-import '../../components/iml-icon-arrow.js';
 import '../../components/iml-icon-pen.js';
 import '../../components/iml-icon-trash.js';
 import '../../components/iml-icon-share.js';
@@ -15,7 +14,7 @@ const meta = makeMeta({
             description: 'Le nom de l\'icône affichée sur le bouton d\'action',
             control: 'text',
             type: 'string',
-            defaultValue: 'arrow'
+            defaultValue: 'three-dots'
         },
         {
             name: 'actions',
@@ -56,7 +55,6 @@ export const Default = makeStory({
     description: 'Menu d\'exemple avec trois actions.',
     items: [
         {
-            'icon': 'pen',
             'label': 'Actions',
             'actions': JSON.stringify([
                 { name: 'edit', caption: 'Éditer', icon: 'pen' },

@@ -1,5 +1,6 @@
 import { ImlHTMLElement } from './lib/iml-html-element.js';
 import { customElement, property } from './lib/decorators.js';
+import './iml-icon-three-dots.js'; 
 
 type TypeCustomEventImlMenu = 'iml-menu:click';
 
@@ -18,7 +19,7 @@ export class ImlMenu extends ImlHTMLElement<TypeCustomEventImlMenu> {
     private boundDocumentClick?: (evt: Event) => void;
 
     /** Nom de l'icône affichée dans le bouton d'action */
-    @property({ render: true }) icon: string = 'arrow';
+    @property({ render: true }) icon: string = 'three-dots';
 
     /** Liste des actions du menu */
     @property({ type: 'object', render: true }) actions: ImlMenuAction[] = [];
