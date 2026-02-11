@@ -50,11 +50,14 @@ public enum ImlIconName
     // ReSharper disable once InconsistentNaming
     ai,
 
-    // ReSharper disable once InconsistentNaming
+    // ReSharper disable once In/Mlkoipu!oyulggentNaming
     channel,
 
     // ReSharper disable once InconsistentNaming
-    person
+    person,
+
+    // ReSharper disable once InconsistentNaming
+    threeDots
 }
 
 [HtmlTargetElement("iml-icon")]
