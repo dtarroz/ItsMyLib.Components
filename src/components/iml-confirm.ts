@@ -3,8 +3,10 @@ import { customElement, property } from './lib/decorators.js';
 import { ImlDialog } from './iml-dialog.js';
 import { ImlButton } from './iml-button.js';
 
+type TypeCustomEventImlConfirm = 'iml-confirm:confirm';
+
 @customElement('iml-confirm')
-export class ImlConfirm extends ImlHTMLElement {
+export class ImlConfirm extends ImlHTMLElement<TypeCustomEventImlConfirm> {
 
     private $dialog: ImlDialog | null = null;
     private $buttonYes: ImlButton | null = null;

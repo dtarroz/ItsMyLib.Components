@@ -3,8 +3,10 @@ import { customElement, property } from './lib/decorators.js';
 import './iml-icon-cross.js';
 import { ImlIcon } from './iml-icon.js';
 
+type TypeCustomEventImlDialog = 'iml-dialog:show';
+
 @customElement('iml-dialog')
-export class ImlDialog extends ImlHTMLElement {
+export class ImlDialog extends ImlHTMLElement<TypeCustomEventImlDialog> {
 
     private $container: HTMLDivElement | null = null;
     private $buttonClose: ImlIcon | null = null;
