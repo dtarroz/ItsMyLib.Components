@@ -1,8 +1,8 @@
 import { ImlHTMLElement } from './lib/iml-html-element.js';
 import { customElement, property } from './lib/decorators.js';
-import './iml-icon-three-dots.js'; 
+import './iml-icon-three-dots.js';
 
-type TypeCustomEventImlMenu = 'iml-menu:click';
+type TypeCustomEventImlMenu = 'iml-menu:action-click';
 
 interface ImlMenuAction {
     name: string;
@@ -88,7 +88,7 @@ export class ImlMenu extends ImlHTMLElement<TypeCustomEventImlMenu> {
         const target = evt.currentTarget as HTMLElement;
         const name = target.getAttribute('data-name') || undefined;
         if (name) {
-            const shouldProceed = this.dispatchCustomEvent('iml-menu:click', { cancelable: true, detail: name });
+            const shouldProceed = this.dispatchCustomEvent('iml-menu:action-click', { cancelable: true, detail: name });
             // si l'événement n'a pas été preventDefault, on ferme
             if (shouldProceed)
                 this.close();

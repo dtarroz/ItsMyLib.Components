@@ -7,7 +7,7 @@ import '../../components/iml-icon-share.js';
 
 const meta = makeMeta({
     tag: 'iml-menu',
-    description: 'Un menu d\'actions simple qui s\'ouvre au clic et émet `iml-menu:click` avec le nom de l\'action',
+    description: 'Un menu d\'actions simple qui s\'ouvre au clic et émet `iml-menu:action-click` avec le nom de l\'action',
     attributes: [
         {
             name: 'icon',
@@ -40,7 +40,7 @@ const meta = makeMeta({
     ],
     events: [
         {
-            name: 'iml-menu:click',
+            name: 'iml-menu:action-click',
             description: 'Evénement déclenché quand une action est sélectionnée (detail = nom de l\'action)'
         }
     ]
@@ -63,5 +63,5 @@ export const Default = makeStory({
             ])
         }
     ],
-    htmlBefore:'<style>iml-menu{ margin-left: 150px; margin-top: 150px; }</style>'
+    htmlBefore: '<style>iml-menu{ margin-left: 150px; margin-top: 150px; }</style>'
 });
