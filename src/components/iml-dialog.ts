@@ -10,9 +10,10 @@ export class ImlDialog extends ImlHTMLElement<TypeCustomEventImlDialog> {
 
     private $container: HTMLDivElement | null = null;
     private $buttonClose: ImlIcon | null = null;
+    private $title: HTMLDivElement | null = null;
 
     /** Le titre de la boite de dialogue modale */
-    @property() headerTitle?: string;
+    @property({ changedCallback: '_updateAttribut' }) headerTitle?: string;
 
     /** Affiche ou non le bouton de fermeture */
     @property({ type: 'boolean', changedCallback: '_updateAttribut' }) closeButton: boolean = true;
@@ -40,7 +41,7 @@ export class ImlDialog extends ImlHTMLElement<TypeCustomEventImlDialog> {
                 <div class="dialog ${this.size}">
                     <iml-icon-cross class="close ${this.closeButton ? '' : 'hidden'}" data-close></iml-icon-cross>
                     <div class="header">
-                        <div class="header-title">${this.headerTitle}</div>
+                        <div class="header-title" data-title>${this.headerTitle}</div>
                     </div>
                     <slot></slot>
                 </div>
@@ -51,6 +52,7 @@ export class ImlDialog extends ImlHTMLElement<TypeCustomEventImlDialog> {
         this.$container = this.queryShadowSelector('[data-container]');
         this.$buttonClose = this.queryShadowSelector('[data-close]');
         this.$buttonClose?.addEventListener('click', () => this.close());
+        this.$title = this.queryShadowSelector('[data-title]');
     }
 
     // @ts-ignore
@@ -59,6 +61,8 @@ export class ImlDialog extends ImlHTMLElement<TypeCustomEventImlDialog> {
             this.$buttonClose?.classList.remove('hidden');
         else
             this.$buttonClose?.classList.add('hidden');
+        if (this.$title)
+            this.$title.innerHTML = this.headerTitle || '';
     }
 
     private isShowing(): boolean {

@@ -27,7 +27,7 @@ export class ImlConfirm extends ImlHTMLElement<TypeCustomEventImlConfirm> {
     @property() buttonNoMode: 'primary' | 'secondary' = 'secondary';
 
     /** Le titre de la boite de dialogue modale */
-    @property() headerTitle?: string;
+    @property({ changedCallback: '_updateAttribut' }) headerTitle?: string;
 
     /** L'état du rendu de la boite de dialogue */
     @property() size: 'x-small' | 'small' | 'large' = 'small';
@@ -58,6 +58,12 @@ export class ImlConfirm extends ImlHTMLElement<TypeCustomEventImlConfirm> {
         this.$buttonNo = this.queryShadowSelector('[data-button-no]');
         this.$buttonYes?.addEventListener('iml-button:click', () => this._click('yes'));
         this.$buttonNo?.addEventListener('iml-button:click', () => this._click('no'));
+    }
+
+    // @ts-ignore
+    private _updateAttribut(_: string, __: string, ___: string): void {
+        if (this.$dialog)
+            this.$dialog.headerTitle = this.headerTitle;
     }
 
     private _click(button: string) {
