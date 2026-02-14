@@ -1,7 +1,9 @@
 import { ImlHTMLElement } from './lib/iml-html-element.js';
 import { customElement, property } from './lib/decorators.js';
 import { ImlDialog } from './iml-dialog.js';
+import './iml-dialog.js';
 import { ImlButton } from './iml-button.js';
+import './iml-button.js';
 
 type TypeCustomEventImlConfirm = 'iml-confirm:confirm';
 
