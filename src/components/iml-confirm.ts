@@ -68,6 +68,10 @@ export class ImlConfirm extends ImlHTMLElement<TypeCustomEventImlConfirm> {
     protected override css() {
         return `
             <style>
+                :host {
+                    font-family: Arial, sans-serif;
+                }
+            
                 .footer {
                     display: flex;
                     align-items: center;
