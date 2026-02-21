@@ -43,6 +43,23 @@ const meta = makeMeta({
             name: 'iml-menu:action-click',
             description: 'Evénement déclenché quand une action est sélectionnée (detail = nom de l\'action)'
         }
+    ],
+    css: [
+        {
+            name: '--iml-menu-button-action-image-size',
+            description: 'La taille de l\'image du bouton action',
+            defaultValue: '1rem'
+        },
+        {
+            name: '--iml-menu-button-item-image-size',
+            description: 'La taille des l\'images des élements du menu',
+            defaultValue: '1rem'
+        },
+        {
+            name: '--iml-menu-button-item-font-size',
+            description: 'La taille du texte des élements du menu',
+            defaultValue: '0.95rem'
+        }
     ]
 });
 

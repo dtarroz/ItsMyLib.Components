@@ -97,6 +97,7 @@ export class ImlMenu extends ImlHTMLElement<TypeCustomEventImlMenu> {
 
     protected override css() {
         return `
+        <!--suppress CssUnresolvedCustomProperty -->
         <style>
             :host {
                 position: relative;
@@ -104,11 +105,7 @@ export class ImlMenu extends ImlHTMLElement<TypeCustomEventImlMenu> {
             }
 
             button.action {
-                display: inline-flex;
-                align-items: center;
-                gap: 8px;
-                padding: 8px 10px;
-                border-radius: 6px;
+                padding: 10px 10px;
                 border: 0;
                 background: transparent;
                 cursor: pointer;
@@ -118,8 +115,8 @@ export class ImlMenu extends ImlHTMLElement<TypeCustomEventImlMenu> {
             button.action iml-icon {
                 fill:  #c6c6c6;
                 display: block;
-                width: 16px;
-                height: 16px;
+                width: var(--iml-menu-button-action-image-size, 1rem);
+                height: var(--iml-menu-button-action-image-size, 1rem);
             }
             
             button.action iml-icon:hover,
@@ -163,13 +160,13 @@ export class ImlMenu extends ImlHTMLElement<TypeCustomEventImlMenu> {
             }
 
             .item iml-icon {
-                width: 16px;
-                height: 16px;
+                width: var(--iml-menu-button-item-image-size, 1rem);
+                height: var(--iml-menu-button-item-image-size, 1rem);
                 display: inline-block;
             }
 
             .caption {
-                font-size: 0.95rem;
+                font-size: var(--iml-menu-button-item-font-size, 0.95rem);
             }
         </style>`;
     }
