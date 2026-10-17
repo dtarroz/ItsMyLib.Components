@@ -397,3 +397,4 @@ FodyWeavers.xsd
 # Storybook
 *storybook.log
 storybook-static/
+dist/
