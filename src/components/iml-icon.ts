@@ -7,6 +7,7 @@ export class ImlIcon extends ImlIconElement {
     /** Le nom de l'icône */
     @property({ render: true }) name: 'arrow' | 'search' | 'circle-plus' | 'filter' | 'cross' | 'love' | 'like' | 'unlike' | 'transparent'
                                       | 'share' | 'pen' | 'trash' | 'pen-square' | 'forbidden' | 'ai' | 'channel' | 'person' | 'three-dots'
+                                      | 'settings' | 'settings-outline'
                                       = 'arrow';
 
     protected override html() {

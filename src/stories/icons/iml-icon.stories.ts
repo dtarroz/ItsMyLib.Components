@@ -18,6 +18,8 @@ import '../../components/iml-icon-ai.js';
 import '../../components/iml-icon-channel.js';
 import '../../components/iml-icon-person.js';
 import '../../components/iml-icon-three-dots.js';
+import '../../components/iml-icon-settings.js';
+import '../../components/iml-icon-settings-outline.js';
 
 const meta = makeMeta({
     tag: 'iml-icon',
@@ -28,7 +30,7 @@ const meta = makeMeta({
             description: 'Le nom de l\'icône',
             control: 'select',
             options: ['arrow', 'search', 'circle-plus', 'filter', 'cross', 'love', 'like', 'unlike', 'transparent', 'share', 'pen', 'trash',
-                      'pen-square', 'forbidden', 'ai', 'channel', 'person', 'three-dots'],
+                      'pen-square', 'forbidden', 'ai', 'channel', 'person', 'three-dots', 'settings', 'settings-outline'],
             type: 'string',
             defaultValue: 'arrow'
         },
@@ -121,6 +123,14 @@ export const Default = makeStory({
         },
         {
             'name': 'three-dots',
+            'style': style
+        },
+        {
+            'name': 'settings',
+            'style': style
+        },
+        {
+            'name': 'settings-outline',
             'style': style
         }
     ]
